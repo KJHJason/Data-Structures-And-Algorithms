@@ -3,10 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-typedef std::int_fast32_t fint32;
-typedef std::int_fast64_t fint64;
-
-std::vector<fint64> bubbleSort(std::vector<fint64> arr, int n)
+std::vector<int> bubbleSort(std::vector<int> arr, int n)
 {
     /*
     * Bubble Sort Details
@@ -20,8 +17,9 @@ std::vector<fint64> bubbleSort(std::vector<fint64> arr, int n)
     * 2. If the first element is greater than the second element, swap them.
     * 3. Repeat the entire process for the next two elements.
 
-    * Note that there is flag boolean to optimise bubble sort so that it 
-    will break out of the loop when the array has been sorted after an iteration that had no swapping.
+    * Note that there is the boolean flag variable to optimise it to O(n) best time complexity 
+    for the best case scenario where the array is already sorted in the first iteration.
+    * The flag is implemented to break out of the loop after an iteration that had no swapping.
     */
     bool flag = false;
     for (int i=0; i < n; i++) {
@@ -38,14 +36,14 @@ std::vector<fint64> bubbleSort(std::vector<fint64> arr, int n)
 
 int main()
 {
-    std::vector<fint64> arr;
+    std::vector<int> arr;
     std::cout << "Enter number of elements: ";
     int n; std::cin >> n;
     std::cout << "\n";
 
     std::cout << "Enter elements (with spaces as the delimiter):\n";
     for (int i=0; i < n; i++) {
-        fint64 x; std::cin >> x;
+        int x; std::cin >> x;
         arr.push_back(x);
     }
 
