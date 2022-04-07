@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-std::vector<int> bubbleSort(std::vector<int> arr, int n)
+void bubbleSort(std::vector<int>& arr, int n)
 {
     /*
     * Bubble sort details:
@@ -34,7 +34,6 @@ std::vector<int> bubbleSort(std::vector<int> arr, int n)
         }
         if (!flag) break;
     }
-    return arr;
 }
 
 int main()
@@ -51,7 +50,7 @@ int main()
     }
 
     std::cout << "\nSorted elements:\n";
-    arr = bubbleSort(arr, n);
+    bubbleSort(arr, n);
     for (auto i: arr) {
         std::cout << i << " ";
     }
