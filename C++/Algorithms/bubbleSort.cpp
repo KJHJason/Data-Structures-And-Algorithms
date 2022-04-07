@@ -6,10 +6,13 @@
 std::vector<int> bubbleSort(std::vector<int> arr, int n)
 {
     /*
-    * Bubble Sort Details
+    * Bubble sort details:
+    Bubble sort is a simple sorting algorithm that works by repeatedly swapping adjacent elements if they are in the wrong order.
+
     * Best time complexity: O(n) when the array is already sorted.
     * Average time complexity: O(n^2)
     * Worst time complexity: O(n^2)
+
     * Space complexity: O(1)
 
     * How it works: 
