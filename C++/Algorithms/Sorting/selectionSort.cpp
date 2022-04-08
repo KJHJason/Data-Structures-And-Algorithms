@@ -3,7 +3,9 @@
 #include <vector>
 #include <algorithm>
 
-void printVector(std::vector<int>& arr)
+typedef std::vector<int> vi;
+
+void printVector(vi& arr)
 {
     for (auto& i : arr) {
         std::cout << i << " ";
@@ -11,7 +13,7 @@ void printVector(std::vector<int>& arr)
     std::cout << "\n";
 }
 
-void unstableSelectionSort(std::vector<int>& arr, int n)
+void unstableSelectionSort(vi& arr, int n)
 {
     /*
     * Selection Sort Details:
@@ -43,7 +45,7 @@ void unstableSelectionSort(std::vector<int>& arr, int n)
     }
 }
 
-void stableSelectionSort(std::vector<int>& arr, int n)
+void stableSelectionSort(vi& arr, int n)
 {
     /*
     * Stable Selection Sort Details:
@@ -87,7 +89,7 @@ void stableSelectionSort(std::vector<int>& arr, int n)
 
 int main()
 {
-    std::vector<int> arr;
+    vi arr;
     std::cout << "Enter number of elements: ";
     int n; std::cin >> n;
     std::cout << "\n";
@@ -98,7 +100,7 @@ int main()
         arr.push_back(x);
     }
 
-    std::vector<int> arrCopy(arr); // will be used to demonstrate stable selection sort
+    vi arrCopy(arr); // will be used to demonstrate stable selection sort
 
     std::cout << "\nSorted elements via unstable selection sort:\n";
     unstableSelectionSort(arr, n);

@@ -3,7 +3,9 @@
 #include <vector>
 #include <algorithm>
 
-void bubbleSort(std::vector<int>& arr, int n)
+typedef std::vector<int> vi;
+
+void bubbleSort(vi& arr, int n)
 {
     /*
     * Bubble sort details:
@@ -38,7 +40,7 @@ void bubbleSort(std::vector<int>& arr, int n)
 
 int main()
 {
-    std::vector<int> arr;
+    vi arr;
     std::cout << "Enter number of elements: ";
     int n; std::cin >> n;
     std::cout << "\n";
