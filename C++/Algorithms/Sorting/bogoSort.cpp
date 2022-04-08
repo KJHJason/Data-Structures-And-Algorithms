@@ -36,7 +36,7 @@ void bogoSort(vi& arr, int n)
     
     * How it works:
     * 1. Shuffle the array
-    * 2. Repeat the step 1 until the array is sorted
+    * 2. Repeat step 1 until the array is sorted
 
     * Note that this should be used as a joke or as a placeholder for a more efficient sorting algorithm since this sorting algorithm is very inefficient.
     */
