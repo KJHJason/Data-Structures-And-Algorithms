@@ -13,8 +13,8 @@ void countingSort(vi& arr, int n)
     It is a linear time algorithm in the worst case.
 
     * Best time complexity: O(n+k) where k is the range
-    * Average time complexity: O(n+k) where k is the range
     * Worst time complexity: O(n+k) where k is the range
+    * Average time complexity: O(n+k) where k is the range
 
     * Space complexity: O(n+k) where k is the range
 

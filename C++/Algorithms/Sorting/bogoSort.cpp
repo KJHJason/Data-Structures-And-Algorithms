@@ -29,8 +29,9 @@ void bogoSort(vi& arr, int n)
     Bogosort is a sorting algorithm that works by repeatedly shuffling a list of elements until it is in the correct order.
 
     * Best time complexity: O(n) when the array is already sorted
-    * Average time complexity: O(n*n!)
     * Worst time complexity: O(∞) as this algorithm has no upper bound
+    * Average time complexity: O(n*n!)
+
     * Space complexity: O(1)
     
     * How it works:
