@@ -7,6 +7,7 @@ typedef std::vector<int> vi;
 void sort(vi& arr, int n)
 {
     /*
+    * Dutch National Flag Algorithm/3-way Partitioning Algorithm Details:
     The Dutch National Flag algorithm or the 3-way partitioning algorithm is an
     algorithm that uses a pivot value (starting from the left/index 0) to divide an array 
     into three parts where the first subarray will contain elements of 0 and 
