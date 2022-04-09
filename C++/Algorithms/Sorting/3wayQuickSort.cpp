@@ -4,67 +4,50 @@
 
 typedef std::vector<int> vi;
 
-void partition(vi& arr, int l, int r, int& i, int& j)
+void partition(vi& arr, int low, int high, int& i, int& j)
 {
     /* 
     This function partitions the array into three parts:
     * a[l..i] contains all elements smaller than pivot
     * a[i+1..j-1] contains all occurrences of pivot
-    * a[j..r] contains all elements greater than pivot 
+    * a[j..r] contains all elements greater than pivot
+    --> Partition explanation credits: https://www.geeksforgeeks.org/3-way-quicksort-dutch-national-flag/
     */
 
-    i = l - 1, j = r;
-    int p = l - 1, q = r, v = arr[r];
-
-    while (true) {
-        // From the left, find the first element greater than or equal to v. 
-        // This loop will definitely terminate as v is last element
-        while (arr[++i] < v);
-
-        // From the right, find the first element smaller than or equal to v
-        while (v < arr[--j]) {
-            if (j == l) break;
-        }
-
-        // If i and j pointers intersects, then we are done and break out of the loop
-        if (i >= j) break;
-
-        // Swap so that smaller goes on left greater goes on the right
-        std::swap(arr[i], arr[j]);
-
-        // Move all same left occurrence of pivot to the beginning of array and keep count using p
-        if (arr[i] == v) {
-            p++;
-            std::swap(arr[p], arr[i]);
-        }
-
-        // Move all same right occurrence of pivot to end of the array and keep count using q
-        if (arr[j] == v) {
-            q--;
-            std::swap(arr[j], arr[q]);
-        }
+    // if there is two or less elements
+    if (high - low <= 1) {
+        // swap the elements if they are in the wrong order
+        if (arr[high] < arr[low]) std::swap(arr[high], arr[low]); 
+        i = low; j = high;
+        return;
     }
 
-    // Move pivot element to its correct index
-    std::swap(arr[i], arr[r]);
+    // initialise pointers
+    int mid{low}, pivot{arr[high]};
+    while (mid <= high) {
+        // if the element is smaller than the pivot, swap it with the element
+        // at the index pointed to the variable low then increment the low pointer
+        if (arr[mid] < pivot) std::swap(arr[mid++], arr[low++]);
+        // if the element is equal to the pivot, increment the mid pointer
+        else if (arr[mid] == pivot) mid++;
+        // if the element is bigger than the pivot, swap it with the element
+        // at the index pointed to the variable high then decrement the high pointer
+        else if (arr[mid] > pivot) std::swap(arr[mid], arr[high--]);
+    }
 
-    // Move all left same occurrences from beginning to adjacent to arr[i]
-    j = i - 1;
-    for (int k = l; k < p; k++, j--) std::swap(arr[k], arr[j]);
-
-    // Move all right same occurrences from end to adjacent to arr[i]
-    i = i + 1;
-    for (int k = r - 1; k > q; k--, i++) std::swap(arr[i], arr[k]);
+    i = low - 1;
+    j = mid;
 }
 
-void quickSort(vi& arr, int l, int r)
+void quickSort(vi& arr, int low, int high)
 {
     /*
     * Stable quick sort details:
     This quick sort algorithm sorts an array by taking an element as a pivot and dividing the array 
     into three parts, the elements less than the pivot, the elements equal to the pivot, and the 
     elements greater than the pivot.
-    This algorithm is not stable and has a slightly higher overhead compared to the typical quick sort.
+    This algorithm uses the Dutch National Flag algorithm to partition the array.
+    Additionally, this algorithm is not stable and has a slightly higher overhead compared to the typical 2-way quick sort.
 
     * Best time complexity: O(n log n)
     * Worst time complexity: O(n^2)
@@ -77,18 +60,18 @@ void quickSort(vi& arr, int l, int r)
     * 2. Partition the array around the pivot.
     * 3. Recursively sort the sub-array on the left of the pivot and the sub-array on the right of the pivot.
     */
-    if (l >= r) return; 
+    if (low >= high) return; 
 
     int i{}, j{};
 
     // partition the array
-    partition(arr, l, r, i, j);
+    partition(arr, low, high, i, j);
 
-    // sorting the left part
-    quickSort(arr, l, j);
+    // sorting the left half recursively
+    quickSort(arr, low, i);
 
-    // sorting the right part
-    quickSort(arr, i, r);
+    // sorting the right half recursively
+    quickSort(arr, j, high);
 }
 
 int main()

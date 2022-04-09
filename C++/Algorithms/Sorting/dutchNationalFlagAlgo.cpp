@@ -18,7 +18,9 @@ void sort(vi& arr, int n)
 
     * Space complexity: O(1)
     */
-    int low{}, mid {}, high { n - 1 };
+
+    // initialise pointers
+    int low{}, mid {}, high{n - 1};
 
     while (mid <= high) {
         switch (arr[mid]) {
