@@ -7,8 +7,10 @@ typedef std::vector<int> vi;
 void sort(vi& arr, int n)
 {
     /*
-    The Dutch National Flag algorithm or the 3-way partitioning algorithm is a divide and conquer 
-    algorithm that uses a pivot value to divide an array into three parts.
+    The Dutch National Flag algorithm or the 3-way partitioning algorithm is an
+    algorithm that uses a pivot value (starting from the left/index 0) to divide an array 
+    into three parts where the first subarray will contain elements of 0 and 
+    the second subarray will contain elements of 1 and the third subarray will elements of 2.
     The algorithm is used in various sorting algorithms such as the 3-way quick sort algorithm.
     This sorting algorithm sort the array with elements among the 3 numbers (0, 1, 2) in an ascending order.
 
