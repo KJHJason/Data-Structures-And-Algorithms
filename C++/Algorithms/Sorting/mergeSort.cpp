@@ -89,7 +89,7 @@ int main()
     int n; std::cin >> n;
     std::cout << "\n";
 
-    std::cout << "Enter elements (with spaces as the delimiter and elements between 0 to 2):\n";
+    std::cout << "Enter elements (with spaces as the delimiter):\n";
     for (int i=0; i < n; i++) {
         int x; std::cin >> x;
         arr.push_back(x);
