@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <algorithm>
 
@@ -49,8 +48,6 @@ int main()
 
     std::cout << "\nSorted elements:\n";
     insertionSort(arr, n);
-    for (auto i: arr) {
-        std::cout << i << " ";
-    }
+    for (const auto& i: arr) std::cout << i << " ";
     return 0;
 }

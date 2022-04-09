@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <algorithm>
 
@@ -7,13 +6,11 @@ typedef std::vector<int> vi;
 
 void printVector(vi& arr)
 {
-    for (auto& i : arr) {
-        std::cout << i << " ";
-    }
+    for (const auto& i : arr) std::cout << i << " ";
     std::cout << "\n";
 }
 
-void unstableSelectionSort(vi& arr, int n)
+void selectionSort(vi& arr, int n)
 {
     /*
     * Selection Sort Details:
@@ -102,8 +99,8 @@ int main()
 
     vi arrCopy(arr); // will be used to demonstrate stable selection sort
 
-    std::cout << "\nSorted elements via unstable selection sort:\n";
-    unstableSelectionSort(arr, n);
+    std::cout << "\nSorted elements via selection sort:\n";
+    selectionSort(arr, n);
     printVector(arr);
 
     std::cout << "\nSorted elements via stable selection sort:\n";
