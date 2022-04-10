@@ -20,7 +20,7 @@
 */
 class Queue
 {
-    std::vector<int> arr; // using vector for dynamic size to store the elements as compared to C array
+    std::vector<int> arr; // using vector for dynamic size to store the elements instead of C array
     int front;            // front points to the front element in the queue (if any)
     int end;              // end points to the last element in the queue
     int currentSize;      // current size of the queue
