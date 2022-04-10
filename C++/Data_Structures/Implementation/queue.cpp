@@ -10,9 +10,13 @@
     The elements are stored in a first-in-first-out (FIFO) order, meaning that the first element added to the queue is the first one to be removed.
     Think of it as a normal queue in real life where the first person to queue up in a restaurant will be the first to be served and leave the queue.
 
-    Enqueuing and dequeuing are O(1) operations while searching is an O(n) operation where n is the number of elements in the queue.
-    More details on the time complexity can be found below: 
-    https://cs.stackexchange.com/questions/105029/what-is-the-time-complexity-of-enqueue-and-dequeue-of-a-queue-implemented-with-a
+    Methods Time Complexities:
+    - enqueue: O(1)
+    - dequeue: O(1)
+    - peek: O(1)
+    - size: O(1)
+    - isEmpty: O(1)
+    - isFull: O(1)
 
     Note: This function uses vector for a dynamic array size instead of C array. Thus, not needing a front and rear pointer.
 */

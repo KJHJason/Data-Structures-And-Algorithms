@@ -26,7 +26,12 @@ void printStack(std::stack<int> q, std::string addMsg = "Stack Elements (from to
     The elements are stored in a last-in-first-out (LIFO) order, meaning that the last element added to the stack is the first one to be removed.
     Think of it as a stack of plates to be cleaned. It's efficient to put a new plate on the top of the stack of plates to be cleaned. However, it's inefficient to take the plate from the bottom, so we will take the plate from the top to wash it. Hence, the LIFO order.
 
-    Pushing and popping are O(1) operations while searching is an O(n) operation where n is the number of elements in the stack.
+    Functions Time Complexities:
+    - push: O(1)
+    - pop: O(1)
+    - top: O(1)
+    - size: O(1)
+    - empty: O(1)
 
     Note: This function will provide a demonstration of the stack data structure using C++ STL (Standard Template Library).
 */
