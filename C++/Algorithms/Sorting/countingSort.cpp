@@ -44,9 +44,9 @@ void countingSort(vi& arr, int n)
 
     vi sortedArr(n);
     for (int i = n - 1; i >= 0; i--) {
-        // Find the index of each element of the original array in count array, and place the elements in sortedArr
+        // Find the correct index in the sorted array, and place the element there
         sortedArr[countArr[arr[i] - min] - 1] = arr[i];
-        // minus count from countArr
+        // decrement the countArr count value
         countArr[arr[i] - min]--; 
     }
     arr = sortedArr;
