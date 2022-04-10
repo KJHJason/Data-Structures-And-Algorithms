@@ -14,14 +14,12 @@
     More details on the time complexity can be found below: 
     https://cs.stackexchange.com/questions/105029/what-is-the-time-complexity-of-enqueue-and-dequeue-of-a-queue-implemented-with-a
 
-    Note: This function uses vector for a dynamic array size instead of C array.
+    Note: This function uses vector for a dynamic array size instead of C array. Thus, not needing a front and rear pointer.
 */
 class Queue
 {
     std::vector<int> arr; // using vector for dynamic size to store the elements instead of C array
-    int front;            // front points to the front element in the queue (if any)
-    int end;              // end points to the last element in the queue
-    int currentSize;      // current size of the queue
+    int currentSize{};    // current size of the queue
     int maxCapacity{};    // maximum capacity of the queue          
 
     public:
@@ -31,7 +29,9 @@ class Queue
         void enqueue(int x);
 
         int peek();
+        int back();
         int size();
+        
         bool isEmpty();
         bool isFull();
 
@@ -43,11 +43,7 @@ class Queue
 Queue::Queue(int maxCap) {
     if (maxCap > 0) maxCapacity = maxCap;
     else if (maxCap < 0) std::cout << "Warning: Max capacity cannot be negative and will be defaulted to unlimited!\n";
-
-    front = 0;
-    end = 0;
-    currentSize = 0;
-};
+}
 
 // function to dequeue the front element
 void Queue::dequeue()
@@ -63,9 +59,6 @@ void Queue::dequeue()
 
     // Update the queue size
     currentSize--;
-
-    // Update the front pointers
-    front++;
 }
 
 // function to add an item to the queue
@@ -77,8 +70,10 @@ void Queue::enqueue(int item)
         return;
     }
 
+    // Add the item to the queue to the back
     arr.push_back(item);
-    end = arr.size();
+
+    // Update the queue size
     currentSize++;
 }
 
@@ -86,10 +81,19 @@ void Queue::enqueue(int item)
 int Queue::peek()
 {
     if (isEmpty()) {
-        std::cout << "Error: Queue Underflow\n";
+        std::cout << "Error: Queue is empty!\n";
         return -1;
     }
     return arr.front();
+}
+
+int Queue::back()
+{
+    if (isEmpty()) {
+        std::cout << "Error: Queue is empty!\n";
+        return -1;
+    }
+    return arr.back();
 }
 
 // function to return the size of the queue
@@ -112,14 +116,17 @@ bool Queue::isFull() {
 void Queue::clearQueue()
 {
     arr.clear();
-    front = 0;
-    end = 0;
     currentSize = 0;
 }
 
 // function to display the queue
 void Queue::printQueue()
 {
+    if (isEmpty()) {
+        std::cout << "Unable to print: Queue is empty\n";
+        return;
+    }
+
     std::cout << "Queue: ";
     for (auto i : arr) {
         std::cout << i << " ";
@@ -131,7 +138,7 @@ void Queue::printQueue()
 
 void demoOne()
 {
-    // create a queue
+    // create a queue with no max capacity limit
     std::cout << "Creating a queue with no max capacity limit:\n";
     Queue q; 
 
@@ -147,6 +154,9 @@ void demoOne()
     // .peek() for the front element
     std::cout << "Front: " << q.peek() << "\n";
 
+    // .back() for the back element
+    std::cout << "Back: " << q.back() << "\n";
+
     // .size() to get the size of the queue
     std::cout << "Size: " << q.size() << "\n";
 
@@ -154,12 +164,12 @@ void demoOne()
     std::cout << "Empty condition: " << (q.isEmpty() ? "True" : "False") << "\n";
 
     // .dequeue() to dequeue the front element
-    std::cout << "\nDequeuing the front element:\n";
+    std::cout << "\nDequeuing the front element, number 10:\n";
     q.dequeue();
     q.printQueue();
 
     // .enqueue() to add an element to the queue
-    std::cout << "\nEnqueuing an element:\n";
+    std::cout << "\nEnqueuing the number 10 back to the queue:\n";
     q.enqueue(10);
     q.printQueue();
     
@@ -187,12 +197,14 @@ void demoTwo()
     q.printQueue();
 
     // will print an error when you try to enqueue when the queue is full
-    std::cout << "\nAn error will be printed when you try to enqueue when the queue is full below,\n";
+    std::cout << "\nEnqueuing the number 60...\n";
     q.enqueue(60);
+    std::cout << "As expected, an error message has been printed as the queue is full!\n";
 }
 
 int main()
 {
+    std::cout << "Demonstrating Queue Implementation:\n\n";
     demoOne();
     demoTwo();
     std::cout << "\nEnd of program...";

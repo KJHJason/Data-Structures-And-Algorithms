@@ -24,7 +24,7 @@ void printStack(std::stack<int> q, std::string addMsg = "Stack Elements (from to
     It is a container adaptor, which provides a different interface for accessing its elements.
 
     The elements are stored in a last-in-first-out (LIFO) order, meaning that the last element added to the stack is the first one to be removed.
-    Think of it as a stack of plates to be cleaned. It's efficient to put a new plate on the top of the stack of plates to be cleaned. However, it's inefficient to take the plate from the bottom, so we will take the plate from the top and wash it. Hence, the LIFO order.
+    Think of it as a stack of plates to be cleaned. It's efficient to put a new plate on the top of the stack of plates to be cleaned. However, it's inefficient to take the plate from the bottom, so we will take the plate from the top to wash it. Hence, the LIFO order.
 
     Pushing and popping are O(1) operations while searching is an O(n) operation where n is the number of elements in the stack.
 
@@ -48,11 +48,11 @@ void stack()
 
     // .pop() to remove the top element of the stack
     s.pop();
-    printStack(s, "After pop/dequeue (from top to bottom): ");
+    printStack(s, "After pop (from top to bottom): ");
 
     // .push() to add enqueue data to the stack
     int n{60}; s.push(n);
-    printStack(s, "After pushing/enqueuing the number " + std::to_string(n) + " (from top to bottom): ");
+    printStack(s, "After pushing the number " + std::to_string(n) + " (from top to bottom): ");
     br();
 
     // .size() to get the size of the stack
@@ -74,6 +74,7 @@ void stack()
 
 int main()
 {
+    std::cout << "Demonstrating Stack Implementation using C++ STL:\n\n";
     stack();
     std::cout << "\nEnd of program...";
     return 0;
