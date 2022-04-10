@@ -89,7 +89,7 @@ int Queue::peek()
         std::cout << "Error: Queue Underflow\n";
         return -1;
     }
-    return arr[front];
+    return arr.front();
 }
 
 // function to return the size of the queue
