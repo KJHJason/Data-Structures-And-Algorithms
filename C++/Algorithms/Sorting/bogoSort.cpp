@@ -21,9 +21,7 @@ void shuffle(vi& arr, int n)
     }
 }
 
-void bogoSort(vi& arr, int n)
-{
-    /*
+/*
     * Bogosort details: 
     Bogosort is a sorting algorithm that works by repeatedly shuffling a list of elements until it is in the correct order.
 
@@ -38,7 +36,9 @@ void bogoSort(vi& arr, int n)
     * 2. Repeat step 1 until the array is sorted
 
     * Note that this should be used as a joke or as a placeholder for a more efficient sorting algorithm since this sorting algorithm is very inefficient.
-    */
+*/
+void bogoSort(vi& arr, int n)
+{
     do {
         shuffle(arr, n);
     } while (!isSorted(arr, n)); // shuffle the array until it's sorted

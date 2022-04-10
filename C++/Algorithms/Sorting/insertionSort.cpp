@@ -4,9 +4,7 @@
 
 typedef std::vector<int> vi;
 
-void insertionSort(vi& arr, int n)
-{
-    /*
+/*
     * Insertion sort details:
     The insertion sort algorithm sorts an array by taking each element one by one and placing it in its correct position in the sorted array.
     
@@ -19,7 +17,9 @@ void insertionSort(vi& arr, int n)
     * How it works: 
     * 1. Take each element in the array and place it in its correct position in the sorted array
     * 2. Repeat step 1 until the array is sorted
-    */
+*/
+void insertionSort(vi& arr, int n)
+{
     for (int i = 1; i < n; i++) {
         int el = arr[i]; // save the value to be positioned
 

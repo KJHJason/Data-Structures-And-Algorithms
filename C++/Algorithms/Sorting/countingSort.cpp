@@ -4,9 +4,7 @@
 
 typedef std::vector<int> vi;
 
-void countingSort(vi& arr, int n)
-{
-    /*
+/*
     * Counting sort details:
     The counting sort algorithm sorts an array by counting the number of occurrences of each element.
     It is a linear time algorithm in the worst case.
@@ -24,7 +22,9 @@ void countingSort(vi& arr, int n)
     * 4. Change the count array to the cumulative sum of the elements
     * 5. Create a new array as a placeholder for the sorted array
     * 6. Find the index of each element of the original array in count array, and place the elements in the new array
-    */
+*/
+void countingSort(vi& arr, int n)
+{
     int max = *max_element(arr.begin(), arr.end());
     int min = *min_element(arr.begin(), arr.end());
     int range = max - min + 1;

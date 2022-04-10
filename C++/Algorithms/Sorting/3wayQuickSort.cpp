@@ -4,16 +4,15 @@
 
 typedef std::vector<int> vi;
 
-void partition(vi& arr, int low, int high, int& i, int& j)
-{
-    /* 
+/* 
     This function partitions the array into three parts:
     * a[l..i] contains all elements smaller than pivot
     * a[i+1..j-1] contains all occurrences of pivot
     * a[j..r] contains all elements greater than pivot
     --> Partition explanation credits: https://www.geeksforgeeks.org/3-way-quicksort-dutch-national-flag/
-    */
-
+*/
+void partition(vi& arr, int low, int high, int& i, int& j)
+{
     // if there is two or less elements
     if (high - low <= 1) {
         // swap the elements if they are in the wrong order
@@ -39,9 +38,7 @@ void partition(vi& arr, int low, int high, int& i, int& j)
     j = mid;
 }
 
-void quickSort(vi& arr, int low, int high)
-{
-    /*
+/*
     * Stable quick sort details:
     This quick sort algorithm sorts an array by taking an element as a pivot and dividing the array 
     into three parts, the elements less than the pivot, the elements equal to the pivot, and the 
@@ -59,7 +56,9 @@ void quickSort(vi& arr, int low, int high)
     * 1. Pick a pivot element from the array.
     * 2. Partition the array around the pivot.
     * 3. Recursively sort the sub-array on the left of the pivot and the sub-array on the right of the pivot.
-    */
+*/
+void quickSort(vi& arr, int low, int high)
+{
     if (low >= high) return; 
 
     int i{}, j{};

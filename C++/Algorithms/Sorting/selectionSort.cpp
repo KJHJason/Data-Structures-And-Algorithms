@@ -10,9 +10,7 @@ void printVector(vi& arr)
     std::cout << "\n";
 }
 
-void selectionSort(vi& arr, int n)
-{
-    /*
+/*
     * Selection Sort Details:
     * This is a sorting algorithm that works by selecting the smallest element from the unsorted part and putting it at the beginning.
     * The algorithm then repeats the process for the unsorted part.
@@ -30,7 +28,9 @@ void selectionSort(vi& arr, int n)
     * 3. If the second element is smaller, then it is selected as the smallest element
     * 4. Then it compares the third element with the second element and so on
     * 5. The algorithm then repeats the process for the unsorted part
-    */
+*/
+void selectionSort(vi& arr, int n)
+{
     for (int i = 0; i < n - 1; i++) {
         int minIndex = i;
         for (int j = i + 1; j < n; j++) {

@@ -55,9 +55,7 @@ void merge(vi& arr, const int left, const int mid, const int right)
     }
 }
 
-void mergeSort(vi& arr, const int start, const int end)
-{
-    /*
+/*
     * Merge Sort Details:
     * This is a sorting algorithm that works by dividing the array into two parts and sorting them recursively (divide and conquer).
     * The algorithm then merges the two sorted parts to form the final sorted array.
@@ -73,7 +71,9 @@ void mergeSort(vi& arr, const int start, const int end)
     * 1. The algorithm starts by dividing the array into two parts
     * 2. Then it sorts the two parts recursively
     * 3. Then it merges the two sorted parts to form the final sorted array
-    */
+*/
+void mergeSort(vi& arr, const int start, const int end)
+{
     if (start >= end) return; // if the array has LESS THAN 2 elements (x < 2), there is nothing to sort
 
     int mid = start + (end - start) / 2;

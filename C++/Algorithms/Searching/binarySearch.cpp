@@ -34,9 +34,7 @@ int iterativeBinarySearch(const vi& arr, const int& elementToFind, int& l, int& 
     return -1; // return -1 if element is not present
 }
 
-int recursiveBinarySearch(const vi& arr, const int& elementToFind, int l, int r)
-{
-    /*
+/*
     * Recursive Binary Search Details:
     * Same as the iterative binary search algorithm, but this algorithm is recursive.
     * This is a search algorithm that works by dividing the array into two parts, the left part and the right part.
@@ -49,7 +47,9 @@ int recursiveBinarySearch(const vi& arr, const int& elementToFind, int l, int r)
     * Average time complexity: O(log n)
     * Worst time complexity: O(log n)
     * Space complexity: O(1)
-    */
+*/
+int recursiveBinarySearch(const vi& arr, const int& elementToFind, int l, int r)
+{
     if (r >= l) {
         int mid = l + (r - l) / 2;
 

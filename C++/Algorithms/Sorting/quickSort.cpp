@@ -22,9 +22,7 @@ int partition(vi& arr, int l, int r)
     return i + 1; // return the new index of the pivot
 }
 
-void quickSort(vi& arr, int l, int r)
-{
-    /*
+/*
     * Quick sort details:
     The quick sort algorithm sorts an array by taking an element as a pivot and dividing the array into two parts, one with elements less than the pivot and the other with elements greater than the pivot.
     This algorithm is not stable.
@@ -39,7 +37,9 @@ void quickSort(vi& arr, int l, int r)
     * 1. Take an element as a pivot and divide the array into two parts, one with elements less than the pivot and the other with elements greater than the pivot
     * 2. Recursively sort the two parts
     * 3. Merge the two sorted parts
-    */
+*/
+void quickSort(vi& arr, int l, int r)
+{
     if (l >= r) return; 
 
     // partition the array
