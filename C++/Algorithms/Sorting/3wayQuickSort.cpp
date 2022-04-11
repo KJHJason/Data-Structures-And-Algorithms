@@ -39,7 +39,7 @@ void partition(vi& arr, int low, int high, int& i, int& j)
 }
 
 /*
-    * Stable quick sort details:
+    * 3-way quick sort details:
     This quick sort algorithm sorts an array by taking an element as a pivot and dividing the array 
     into three parts, the elements less than the pivot, the elements equal to the pivot, and the 
     elements greater than the pivot.
