@@ -167,7 +167,7 @@ void LinkedList::insertAt(int data, int pos)
     currentSize++;
 }
 
-// function to delete the node at the head
+// function to delete the node at the head, aka the first node on the left
 void LinkedList::deleteFrontNode()
 {
     if (!head) return;
@@ -179,6 +179,7 @@ void LinkedList::deleteFrontNode()
     currentSize--;
 }
 
+// function to delete the node at the back, aka the last node on the right
 void LinkedList::deleteBackNode()
 {
     if (!head) return;
