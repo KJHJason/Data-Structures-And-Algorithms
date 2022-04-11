@@ -28,10 +28,11 @@ class Node
 };
 
 /*
-    Singly Linked List is a data structure that consists of a group of nodes where each node contains data and a pointer to the next node in the list.
+    Doubly linked list is a data structure that consists of a group of nodes that are linked together
+    where each node contains data and a pointer to the next and previous node in the linked list.
 
-    It is a type of linked list that is unidirectornal in traversal. This means that we can only traverse the
-    linked list from the left/head to the right.
+    It is a type of linked list that is bidirectional in traversal. This means that we can traverse the
+    linked list from the head/left to the tail/right or vice versa.
 
     Methods Time Complexities:
     - searchPosByData: O(n)
