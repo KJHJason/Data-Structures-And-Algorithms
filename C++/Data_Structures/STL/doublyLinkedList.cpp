@@ -63,18 +63,10 @@ void demo()
     l.clear();
     std::cout << "Is the linked list empty? " << (l.empty() ? "Yes" : "No") << "\n";
     
+    // .assign() to assign new elements to the list (overwrites the existing elements if any)
     nl();
     std::cout << "Adding back the elements to the list...\n";
-    l.push_back(11);
-    l.push_back(10);
-    l.push_back(19);
-    l.push_back(20);
-    l.push_back(30);
-    l.push_back(40);
-    l.push_back(40);
-    l.push_back(40);
-    l.push_back(50);
-    l.push_back(50);
+    l.assign({11, 10, 19, 20, 30, 40, 40, 40, 50, 50});
     printList(l);
 
     // .advance to point to nth position and .insert() to insert data to it
@@ -121,10 +113,7 @@ void demo()
     nl();
     std::cout << "Creating another linked list...\n";
     std::list<int> l2;
-    l2.push_back(60);
-    l2.push_back(70);
-    l2.push_back(80);
-    l2.push_back(90);
+    l2.assign({60, 70, 80, 90});
     printList(l2);
     
     std::cout << "Merging the two linked lists...\n";
@@ -135,10 +124,7 @@ void demo()
     nl();
     std::cout << "Creating another linked list...\n";
     std::list<int> l3;
-    l3.push_back(100);
-    l3.push_back(110);
-    l3.push_back(120);
-    l3.push_back(130);
+    l3.assign({100, 110, 120, 130});
     printList(l3);
 
     std::cout << "Splicing the two linked lists...\n";
