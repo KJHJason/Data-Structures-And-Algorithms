@@ -4,7 +4,8 @@
 #include <algorithm>
 #include <queue>
 
-void br()
+// print a new line
+void nl()
 {
     std::cout << "\n";
 }
@@ -16,7 +17,7 @@ void printQueue(std::queue<int> q, std::string addMsg = "Queue Elements: ")
         std::cout << q.front() << " ";
         q.pop(); // pop here since the queue is a FIFO data structure, i.e. accessible after dequeing the front element
     }
-    std::cout << "\n";
+    nl();
 }
 
 /*
@@ -47,7 +48,7 @@ void queue()
     q.push(40);
 
     printQueue(q);
-    br();
+    nl();
 
     // .front() to get the first element of the queue
     std::cout << "Front: " << q.front() << "\n";
@@ -58,19 +59,19 @@ void queue()
     printQueue(q, "After pop/dequeue: ");
     q.push(10);
     printQueue(q, "After pushing/enqueuing the number 10: ");
-    br();
+    nl();
 
     // .empty() to check if the queue is empty
     std::cout << "Empty condition: " << (q.empty() ? "True" : "False") << "\n";
     // .size() to get the size of the queue
     std::cout << "Size: " << q.size() << "\n";
-    br();
+    nl();
 
     // to clear the queue efficiently
     std::queue<int> empty;
     std::swap(q, empty);
     std::cout << "Empty condition after clearing via swapping with empty queue: " << (q.empty() ? "True" : "False") << "\n";
-    br();
+    nl();
     
     // .swap() to swap the queue
     std::cout << "Before swapping:\n";
@@ -86,7 +87,7 @@ void queue()
     q2.push(60);
     printQueue(q2, "Queue Two's Elements: ");
 
-    br();
+    nl();
     std::cout << "After swapping:\n";
     q1.swap(q2);
     printQueue(q1, "Queue One's ");

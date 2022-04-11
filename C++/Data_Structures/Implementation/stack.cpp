@@ -125,7 +125,8 @@ void Stack::printStack()
 
 /* ================================= END OF STACK IMPLEMENTATION CODES ================================= */
 
-void br()
+// print a new line
+void nl()
 {
     std::cout << "\n";
 }
@@ -145,26 +146,26 @@ void demoOne()
 
     // .top() to get the top element of the stack
     std::cout << "Top: " << s.peek();
-    br();
+    nl();
 
     // .pop() to remove the top element of the stack
-    br();
+    nl();
     s.pop();
     std::cout << "After popping the top element from the stack:\n";
     s.printStack();
 
     // .push() to add enqueue data to the stack
-    br();
+    nl();
     int n{60}; s.push(n);
     std::cout << "After pushing the number " << std::to_string(n) << " (from top to bottom): \n";
     s.printStack();
-    br();
+    nl();
 
     // .size() to get the size of the stack
     std::cout << "Size: " << s.size() << "\n";
     // .empty() to check if the stack is empty
     std::cout << "Empty condition: " << (s.isEmpty() ? "True" : "False") << "\n";
-    br();
+    nl();
 
     // pop all elements in stack
     std::cout << "After clearing the stack:\n";
@@ -201,7 +202,7 @@ int main()
 {
     std::cout << "Demonstrating Stack Implementation:\n\n";
     demoOne();
-    br();
+    nl();
     demoTwo();
     std::cout << "\nEnd of program...";
     return 0;

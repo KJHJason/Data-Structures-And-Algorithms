@@ -35,18 +35,18 @@ class Node
     linked list from the head/left to the tail/right or vice versa.
 
     Methods Time Complexities:
-    - searchPosByData: O(n)
-    - searchPosByIndex: O(n)
-    - insertToFront: O(1)
-    - insertToBack: O(1)
-    - insertAt: O(n)
-    - deleteFrontNode: O(1)
-    - deleteBacwkNode: O(1)
-    - deleteNodeByData: O(n)
-    - deleteNodeAt: O(n)
+    - get_pos: O(n)
+    - get_data: O(n)
+    - push_front: O(1)
+    - push_back: O(1)
+    - insert_at: O(n)
+    - pop_front: O(1)
+    - pop_back: O(1)
+    - pop_by_data: O(n)
+    - pop_by_pos: O(n)
     - size: O(1)
-    - reverseLinkedList: O(n)
-    - printLinkedList: O(n)
+    - reverse: O(n)
+    - display: O(n)
 */
 class LinkedList
 {
@@ -58,36 +58,38 @@ class LinkedList
         LinkedList() { head = NULL; }
         ~LinkedList();
 
-        int searchPosByData(int d);
-        int searchDataByPos(int pos);
+        int get_pos(int d);
+        int get_data(int pos);
 
-        void insertToFront(int d);
-        void insertToBack(int d);
-        void insertAt(int d, int pos);
+        void push_front(int d);
+        void push_back(int d);
+        void insert_at(int d, int pos);
 
-        void deleteFrontNode();
-        void deleteBackNode();
-        void deleteNodeByData(int d);
-        void deleteNodeAt(int pos);
+        void pop_front();
+        void pop_back();
+        void pop_by_data(int d);
+        void pop_by_pos(int pos);
 
         int size();
-        void reverseLinkedList();
-        void printLinkedList(bool printReverse = 0);
+        void reverse();
+        void display(bool printReverse = 0);
 };
 
 // destructor function to delete the linked list
 LinkedList::~LinkedList() 
 { 
     Node* temp = head;
+    Node* prev = NULL;
+
     while (temp != NULL) {
-        Node* next = temp->next;
-        delete temp;
-        temp = next;
+        prev = temp;
+        temp = temp->next;
+        delete prev;
     }
 }
 
 // function to search for a node position with the given data
-int LinkedList::searchPosByData(int d)
+int LinkedList::get_pos(int d)
 {
     int pos{};
     Node* temp = head;
@@ -102,7 +104,7 @@ int LinkedList::searchPosByData(int d)
 }
 
 // function to search for a node data with the given position
-int LinkedList::searchDataByPos(int pos)
+int LinkedList::get_data(int pos)
 {
     if (!head) return -1;
 
@@ -130,7 +132,7 @@ int LinkedList::searchDataByPos(int pos)
 }
 
 // function to add a node to the back of the linked list
-void LinkedList::insertToBack(int data)
+void LinkedList::push_back(int data)
 {
     Node* newNode = new Node(data);
 
@@ -148,7 +150,7 @@ void LinkedList::insertToBack(int data)
 }
 
 // function to add a node to the front of the linked list
-void LinkedList::insertToFront(int data)
+void LinkedList::push_front(int data)
 {
     Node* newNode = new Node(data);
 
@@ -166,10 +168,10 @@ void LinkedList::insertToFront(int data)
 }
 
 // function to add a node at a specific position (Note: 0 is the first position)
-void LinkedList::insertAt(int data, int pos)
+void LinkedList::insert_at(int data, int pos)
 {
-    if (pos == 0) insertToFront(data); 
-    else if (pos == currentSize) insertToBack(data);
+    if (pos == 0) push_front(data); 
+    else if (pos == currentSize) push_back(data);
     else {
         Node* newNode = new Node(data);
         Node* temp = head;
@@ -190,7 +192,7 @@ void LinkedList::insertAt(int data, int pos)
 }
 
 // function to delete the node at the head, aka the first node on the left
-void LinkedList::deleteFrontNode()
+void LinkedList::pop_front()
 {
     if (!head) return;
 
@@ -203,7 +205,7 @@ void LinkedList::deleteFrontNode()
 }
 
 // function to delete the node at the back, aka the last node on the right
-void LinkedList::deleteBackNode()
+void LinkedList::pop_back()
 {
     if (!head) return;
 
@@ -216,15 +218,15 @@ void LinkedList::deleteBackNode()
 }
 
 // function to delete a node from the linked list by searching for the specified node with passed in data argument
-void LinkedList::deleteNodeByData(int data)
+void LinkedList::pop_by_data(int data)
 {
     if (!head) return;
 
     Node* temp = head;
     while (temp != NULL) {
         if (temp->data == data) {
-            if (temp == head) deleteFrontNode();
-            else if (temp == tail) deleteBackNode();
+            if (temp == head) pop_front();
+            else if (temp == tail) pop_back();
             else {
                 temp->prev->next = temp->next;
                 temp->next->prev = temp->prev;
@@ -238,7 +240,7 @@ void LinkedList::deleteNodeByData(int data)
 }
 
 // function to delete a node from the linked list by searching for the specified node with passed in position argument (Note: 0 is the first position)
-void LinkedList::deleteNodeAt(int index)
+void LinkedList::pop_by_pos(int index)
 {
     if (!head) return;
 
@@ -250,8 +252,8 @@ void LinkedList::deleteNodeAt(int index)
         count++;
     }
 
-    if (temp == head) deleteFrontNode();
-    else if (temp == tail) deleteBackNode();
+    if (temp == head) pop_front();
+    else if (temp == tail) pop_back();
     else {
         temp->prev->next = temp->next;
         temp->next->prev = temp->prev;
@@ -267,7 +269,7 @@ int LinkedList::size()
 }
 
 // function to reverse the entire linked list
-void LinkedList::reverseLinkedList()
+void LinkedList::reverse()
 {
     if (!head) return;
     Node* headCopy = head;
@@ -289,7 +291,7 @@ void LinkedList::reverseLinkedList()
 }
 
 // function to print the entire linked list
-void LinkedList::printLinkedList(bool printReverse)
+void LinkedList::display(bool printReverse)
 {
     if (!head) {
         std::cout << "Unable to print Linked list as it is empty!\n";
@@ -314,7 +316,8 @@ void LinkedList::printLinkedList(bool printReverse)
 
 /* ================================= END OF DOUBLY LINKED LIST IMPLEMENTATION ================================= */
 
-void br()
+// print a new line
+void nl()
 {
     std::cout << "\n";
 }
@@ -324,61 +327,61 @@ void demo()
     // initialise a linked list
     std::cout << "Creating a linked list with 5 elements:\n";
     LinkedList list;
-    list.insertToBack(10);
-    list.insertToBack(20);
-    list.insertToBack(30);
-    list.insertToBack(40);
-    list.insertToBack(50);
-    list.printLinkedList();
+    list.push_back(10);
+    list.push_back(20);
+    list.push_back(30);
+    list.push_back(40);
+    list.push_back(50);
+    list.display();
     std::cout << "Size of linked list: " << list.size() << "\n";
 
     // searching
-    br();
-    std::cout << "Searching for node position with data = 30: " << list.searchPosByData(30) << "\n";
-    std::cout << "Searching for node data with position = 2: " << list.searchDataByPos(2) << "\n";
+    nl();
+    std::cout << "Searching for node position with data = 30: " << list.get_pos(30) << "\n";
+    std::cout << "Searching for node data with position = 2: " << list.get_data(2) << "\n";
 
     // reversing linked list
-    br();
+    nl();
     std::cout << "Reversing the linked list:\n";
-    list.reverseLinkedList();
-    list.printLinkedList();
+    list.reverse();
+    list.display();
 
     // insertion
-    br();
+    nl();
     std::cout << "Inserting a new element, 60, at the back of the list:\n";
-    list.insertToBack(60);
-    list.printLinkedList();
+    list.push_back(60);
+    list.display();
 
-    br();
+    nl();
     std::cout << "Inserting a new element, 70, at the front of the list:\n";
-    list.insertToFront(70);
-    list.printLinkedList();
+    list.push_front(70);
+    list.display();
 
-    br();
+    nl();
     std::cout << "Inserting a new element, 80, at the position 1 of the list:\n";
-    list.insertAt(80, 1);
-    list.printLinkedList();
+    list.insert_at(80, 1);
+    list.display();
 
     // deletion
-    br();
+    nl();
     std::cout << "Deleting the first element of the list:\n";
-    list.deleteFrontNode();
-    list.printLinkedList();
+    list.pop_front();
+    list.display();
 
-    br();
+    nl();
     std::cout << "Deleting the last element of the list:\n";
-    list.deleteBackNode();
-    list.printLinkedList();
+    list.pop_back();
+    list.display();
 
-    br();
+    nl();
     std::cout << "Deleting the node with data = 40 from the list:\n";
-    list.deleteNodeByData(40);
-    list.printLinkedList();
+    list.pop_by_data(40);
+    list.display();
 
-    br();
+    nl();
     std::cout << "Deleting the element at the position 1 of the list:\n";
-    list.deleteNodeAt(1);
-    list.printLinkedList();
+    list.pop_by_pos(1);
+    list.display();
 }
 
 int main()

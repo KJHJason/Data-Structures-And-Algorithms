@@ -4,7 +4,8 @@
 #include <algorithm>
 #include <stack>
 
-void br()
+// print a new line
+void nl()
 {
     std::cout << "\n";
 }
@@ -16,7 +17,7 @@ void printStack(std::stack<int> q, std::string addMsg = "Stack Elements (from to
         std::cout << q.top() << " ";
         q.pop(); // pop here since the stack is a LIFO data structure, i.e. accessible after dequeing the top element
     }
-    std::cout << "\n";
+    nl();
 }
 
 /*
@@ -45,11 +46,11 @@ void stack()
     s.push(30);
     s.push(40);
     printStack(s);
-    br();
+    nl();
 
     // .top() to get the top element of the stack
     std::cout << "Top: " << s.top();
-    br();
+    nl();
 
     // .pop() to remove the top element of the stack
     s.pop();
@@ -58,13 +59,13 @@ void stack()
     // .push() to add enqueue data to the stack
     int n{60}; s.push(n);
     printStack(s, "After pushing the number " + std::to_string(n) + " (from top to bottom): ");
-    br();
+    nl();
 
     // .size() to get the size of the stack
     std::cout << "Size: " << s.size() << "\n";
     // .empty() to check if the stack is empty
     std::cout << "Empty condition: " << (s.empty() ? "True" : "False") << "\n";
-    br();
+    nl();
 
     // pop all elements in stack
     std::cout << "After popping all elements from the stack (from top to bottom):\n";
