@@ -18,6 +18,7 @@
     - size: O(1)
     - isEmpty: O(1)
     - isFull: O(1)
+    - printStack: O(n)
 
     Note: This function will vector for a dynamic array size instead of C array.
 */
@@ -28,6 +29,8 @@ class Stack {
 
     public:
         Stack(int maxCap = 0);
+        ~Stack();
+
         void push(int x);
         void pop();
 
@@ -37,11 +40,16 @@ class Stack {
         bool isEmpty();
         bool isFull();
 
-        void clearStack();
         void printStack();
 };
 
-// constructor function
+// destructor function to clear vector
+Stack::~Stack() 
+{
+    arr.clear();
+}
+
+// constructor function to define the max capacity of the queue if given
 Stack::Stack(int maxCap) {
     if (maxCap > 0) maxCapacity = maxCap;
     else if (maxCap < 0) std::cout << "Warning: Max capacity cannot be negative and will be defaulted to unlimited!\n";
@@ -99,12 +107,6 @@ bool Stack::isFull()
 bool Stack::isEmpty()
 {
     return (size() == 0);
-}
-
-void Stack::clearStack()
-{
-    arr.clear();
-    currentSize = 0;
 }
 
 void Stack::printStack()
@@ -166,7 +168,9 @@ void demoOne()
 
     // pop all elements in stack
     std::cout << "After clearing the stack:\n";
-    s.clearStack();
+    while (!s.isEmpty()) {
+        s.pop();
+    }
     s.printStack();
 
     // .empty() to check if the stack is empty

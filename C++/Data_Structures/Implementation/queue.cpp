@@ -17,6 +17,7 @@
     - size: O(1)
     - isEmpty: O(1)
     - isFull: O(1)
+    - printQueue: O(n)
 
     Note: This function uses vector for a dynamic array size instead of C array. Thus, not needing a front and rear pointer.
 */
@@ -28,6 +29,7 @@ class Queue
 
     public:
         Queue(int s = 0);
+        ~Queue();
     
         void dequeue();
         void enqueue(int x);
@@ -39,11 +41,16 @@ class Queue
         bool isEmpty();
         bool isFull();
 
-        void clearQueue();
         void printQueue();
 };
 
-// constructor function
+// destructor function to clear vector
+Queue::~Queue()
+{
+    arr.clear();
+}
+
+// constructor function to define the max capacity of the queue if given
 Queue::Queue(int maxCap) {
     if (maxCap > 0) maxCapacity = maxCap;
     else if (maxCap < 0) std::cout << "Warning: Max capacity cannot be negative and will be defaulted to unlimited!\n";
@@ -116,13 +123,6 @@ bool Queue::isFull() {
     return 0;
 }
 
-// function to clear the queue
-void Queue::clearQueue()
-{
-    arr.clear();
-    currentSize = 0;
-}
-
 // function to display the queue
 void Queue::printQueue()
 {
@@ -178,10 +178,13 @@ void demoOne()
     q.printQueue();
     
 
-    // .clearQueue() to clear the queue
+    // dequeuing all elements to clear the queue
     std::cout << "\nClearing the queue:\n";
-    q.clearQueue();
+    while (!q.isEmpty()) {
+        q.dequeue();
+    }
     q.printQueue();
+
     std::cout << "Empty condition: " << (q.isEmpty() ? "True" : "False") << "\n\n";
 }
 
