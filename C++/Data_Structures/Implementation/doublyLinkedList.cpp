@@ -272,7 +272,7 @@ int LinkedList::size()
 void LinkedList::reverse()
 {
     if (!head) return;
-    Node* headCopy = head;
+    tail = head;
 
     Node* temp = head;
     Node* prev = NULL;
@@ -287,7 +287,6 @@ void LinkedList::reverse()
     }
 
     head = prev;
-    tail = headCopy;
 }
 
 // function to print the entire linked list
