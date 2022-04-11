@@ -1,19 +1,21 @@
 #include <iostream>
 
-/* ================================= SINGLY LINKED LIST IMPLEMENTATION CODES ================================= */
+/* ================================= DOUBLY LINKED LIST IMPLEMENTATION CODES ================================= */
 
-// Nodes for the singly linked list
+// Nodes for the doubly linked list
 class Node 
 {
     public:
         int data;
         Node* next;
+        Node* prev;
 
         // Default constructor if there's no arguments passed in
         Node()
         {
             data = 0;
             next = NULL;
+            prev = NULL;
         }
 
         // Constructor if there's a argument passed in
@@ -21,6 +23,7 @@ class Node
         {
             this->data = data;
             this->next = NULL;
+            this->prev = NULL;
         }
 };
 
@@ -34,10 +37,10 @@ class Node
     - searchPosByData: O(n)
     - searchPosByIndex: O(n)
     - insertToFront: O(1)
-    - insertToBack: O(n)
+    - insertToBack: O(1)
     - insertAt: O(n)
     - deleteFrontNode: O(1)
-    - deleteBackNode: O(n)
+    - deleteBacwkNode: O(1)
     - deleteNodeByData: O(n)
     - deleteNodeAt: O(n)
     - size: O(1)
@@ -47,6 +50,7 @@ class Node
 class LinkedList
 {
     Node* head;
+    Node* tail;
     int currentSize{};
 
     public:
@@ -67,19 +71,17 @@ class LinkedList
 
         int size();
         void reverseLinkedList();
-        void printLinkedList();
+        void printLinkedList(bool printReverse = 0);
 };
 
 // destructor function to delete the linked list
 LinkedList::~LinkedList() 
 { 
     Node* temp = head;
-    Node* prev = NULL;
-
     while (temp != NULL) {
-        prev = temp;
-        temp = temp->next;
-        delete prev;
+        Node* next = temp->next;
+        delete temp;
+        temp = next;
     }
 }
 
@@ -91,8 +93,8 @@ int LinkedList::searchPosByData(int d)
 
     while (temp != NULL) {
         if (temp->data == d) return pos;
-        temp = temp->next;
         pos++;
+        temp = temp->next;
     }
 
     return -1;
@@ -101,16 +103,29 @@ int LinkedList::searchPosByData(int d)
 // function to search for a node data with the given position
 int LinkedList::searchDataByPos(int pos)
 {
-    int count{};
-    Node* temp = head;
+    if (!head) return -1;
 
-    while (temp != NULL) {
-        if (count == pos) return temp->data;
-        temp = temp->next;
-        count++;
+    int mid = (currentSize - 1) / 2; // -1 to account for the indexing starting from 0
+    int count;
+    if (pos > mid) {
+        count = currentSize - 1;
+        Node* temp = tail;
+        while (count >= pos) {
+            if (count == pos) return temp->data;
+            temp = temp->prev;
+            count--;
+        }
+    } else {
+        count = 0;
+        Node* temp = head;
+        while (count <= pos) {
+            if (count == pos) return temp->data;
+            temp = temp->next;
+            count++;
+        }
     }
-
-    return -1;
+    
+    return -1; // if the position is out of bound
 }
 
 // function to add a node to the back of the linked list
@@ -120,14 +135,14 @@ void LinkedList::insertToBack(int data)
 
     if (!head) {
         head = newNode;
-    }
+        tail = newNode;
+    } 
     else {
-        Node* temp = head;
-        while (temp->next != NULL) {
-            temp = temp->next;
-        }
-        temp->next = newNode;
+        tail->next = newNode;
+        newNode->prev = tail;
+        tail = newNode;
     }
+
     currentSize++;
 }
 
@@ -138,44 +153,51 @@ void LinkedList::insertToFront(int data)
 
     if (!head) {
         head = newNode;
-    }
+        tail = newNode;
+    } 
     else {
         newNode->next = head;
+        head->prev = newNode;
         head = newNode;
     }
+
     currentSize++;
 }
 
 // function to add a node at a specific position (Note: 0 is the first position)
 void LinkedList::insertAt(int data, int pos)
 {
-    Node* newNode = new Node(data);
-
-    if (!head) {
-        head = newNode;
-    }
+    if (pos == 0) insertToFront(data); 
+    else if (pos == currentSize) insertToBack(data);
     else {
+        Node* newNode = new Node(data);
         Node* temp = head;
         int count = 0;
-        while (temp->next != NULL && count < pos) {
+
+        while (count < pos) {
             temp = temp->next;
             count++;
         }
-        newNode->next = temp->next;
-        temp->next = newNode;
+
+        newNode->next = temp;
+        newNode->prev = temp->prev;
+        temp->prev->next = newNode;
+        temp->prev = newNode;
+
+        currentSize++;
     }
-    currentSize++;
 }
 
 // function to delete the node at the head, aka the first node on the left
 void LinkedList::deleteFrontNode()
 {
     if (!head) return;
-    else {
-        Node* temp = head;
-        head = head->next;
-        delete temp;
-    }
+
+    Node* temp = head;
+    head = head->next;
+    head->prev = NULL;
+    delete temp;
+
     currentSize--;
 }
 
@@ -183,40 +205,33 @@ void LinkedList::deleteFrontNode()
 void LinkedList::deleteBackNode()
 {
     if (!head) return;
-    else {
-        Node* temp = head;
-        Node* prev = NULL;
-        while (temp->next != NULL) {
-            prev = temp;
-            temp = temp->next;
-        }
-        prev->next = NULL;
-        delete temp;
-    }
+
+    Node* temp = tail;
+    tail = tail->prev;
+    tail->next = NULL;
+    delete temp;
+
     currentSize--;
 }
 
 // function to delete a node from the linked list by searching for the specified node with passed in data argument
 void LinkedList::deleteNodeByData(int data)
 {
-    Node* temp = head;
-    Node* prev = NULL;
+    if (!head) return;
 
+    Node* temp = head;
     while (temp != NULL) {
         if (temp->data == data) {
-            if (!prev) {
-                head = temp->next;
-            }
+            if (temp == head) deleteFrontNode();
+            else if (temp == tail) deleteBackNode();
             else {
-                prev->next = temp->next;
+                temp->prev->next = temp->next;
+                temp->next->prev = temp->prev;
+                delete temp;
+                currentSize--;
             }
-            delete temp;
-            currentSize--;
             break;
         }
-
-        // if the node is not found, then move to the next node
-        prev = temp;
         temp = temp->next;
     }
 }
@@ -224,25 +239,23 @@ void LinkedList::deleteNodeByData(int data)
 // function to delete a node from the linked list by searching for the specified node with passed in position argument (Note: 0 is the first position)
 void LinkedList::deleteNodeAt(int index)
 {
-    Node* temp = head;
-    Node* prev = NULL;
-    int count = 0;
+    if (!head) return;
 
-    while (temp != NULL) {
-        if (count == index) {
-            if (!prev) {
-                head = temp->next;
-            }
-            else {
-                prev->next = temp->next;
-            }
-            delete temp;
-            currentSize--;
-            break;
-        }
-        prev = temp;
+    Node* temp = head;
+    int count{};
+
+    while (count < index) {
         temp = temp->next;
         count++;
+    }
+
+    if (temp == head) deleteFrontNode();
+    else if (temp == tail) deleteBackNode();
+    else {
+        temp->prev->next = temp->next;
+        temp->next->prev = temp->prev;
+        delete temp;
+        currentSize--;
     }
 }
 
@@ -255,36 +268,50 @@ int LinkedList::size()
 // function to reverse the entire linked list
 void LinkedList::reverseLinkedList()
 {
+    if (!head) return;
+    Node* headCopy = head;
+
+    Node* temp = head;
     Node* prev = NULL;
-    Node* current = head;
     Node* next = NULL;
 
-    while (current != NULL) {
-        next = current->next;
-        current->next = prev;
-        prev = current;
-        current = next;
+    while (temp != NULL) {
+        next = temp->next;
+        temp->next = prev;
+        temp->prev = next;
+        prev = temp;
+        temp = next;
     }
+
     head = prev;
+    tail = headCopy;
 }
 
 // function to print the entire linked list
-void LinkedList::printLinkedList()
+void LinkedList::printLinkedList(bool printReverse)
 {
-    Node* temp = head;
-    if (!temp) {
+    if (!head) {
         std::cout << "Unable to print Linked list as it is empty!\n";
         return;
     }
 
-    while (temp != NULL) {
-        std::cout << temp->data << " ";
-        temp = temp->next;
+    if (printReverse) {
+        Node* temp = tail;
+        while (temp != NULL) {
+            std::cout << temp->data << " ";
+            temp = temp->prev;
+        }
+    } else {
+        Node* temp = head;
+        while (temp != NULL) {
+            std::cout << temp->data << " ";
+            temp = temp->next;
+        }
     }
     std::cout << "\n";
 }
 
-/* ================================= END OF SINGLY LINKED LIST IMPLEMENTATION ================================= */
+/* ================================= END OF DOUBLY LINKED LIST IMPLEMENTATION ================================= */
 
 void br()
 {
@@ -355,7 +382,7 @@ void demo()
 
 int main()
 {
-    std::cout << "Demonstrating Singly Linked List Implementation:\n\n";
+    std::cout << "Demonstrating Doubly Linked List Implementation:\n\n";
     demo();
     std::cout << "\nEnd of program...";
     return 0;
