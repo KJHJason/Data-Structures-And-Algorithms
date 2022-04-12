@@ -15,9 +15,10 @@
     - dequeue: O(1)
     - peek: O(1)
     - size: O(1)
-    - isEmpty: O(1)
-    - isFull: O(1)
-    - printQueue: O(n)
+    - is_empty: O(1)
+    - is_full: O(1)
+    - display: O(n)
+    - capacity: O(1)
 
     Note: This function uses vector for a dynamic array size instead of C array. Thus, not needing a front and rear pointer.
 */
@@ -38,10 +39,11 @@ class Queue
         int back();
         int size();
         
-        bool isEmpty();
-        bool isFull();
+        bool is_empty();
+        bool is_full();
 
-        void printQueue();
+        void display();
+        int capacity();
 };
 
 // destructor function to clear vector
@@ -60,7 +62,7 @@ Queue::Queue(int maxCap) {
 void Queue::dequeue()
 {
     // check for queue underflow
-    if (isEmpty()) {
+    if (is_empty()) {
         std::cout << "Error: Queue Underflow\n";
         return;
     }
@@ -76,7 +78,7 @@ void Queue::dequeue()
 void Queue::enqueue(int item)
 {
     // check for queue overflow
-    if (isFull()) {
+    if (is_full()) {
         std::cout << "Error: Queue Overflow\n";
         return;
     }
@@ -91,7 +93,7 @@ void Queue::enqueue(int item)
 // function to return the front element of the queue
 int Queue::peek()
 {
-    if (isEmpty()) {
+    if (is_empty()) {
         std::cout << "Error: Queue is empty!\n";
         return -1;
     }
@@ -100,7 +102,7 @@ int Queue::peek()
 
 int Queue::back()
 {
-    if (isEmpty()) {
+    if (is_empty()) {
         std::cout << "Error: Queue is empty!\n";
         return -1;
     }
@@ -113,20 +115,20 @@ int Queue::size() {
 }
 
 // function to check if the queue is empty or not
-bool Queue::isEmpty() {
+bool Queue::is_empty() {
     return (size() == 0);
 }
 
 // function to check if the queue is full or not
-bool Queue::isFull() {
+bool Queue::is_full() {
     if (maxCapacity != 0) return (size() == maxCapacity);
     return 0;
 }
 
 // function to display the queue
-void Queue::printQueue()
+void Queue::display()
 {
-    if (isEmpty()) {
+    if (is_empty()) {
         std::cout << "Unable to print: Queue is empty\n";
         return;
     }
@@ -136,6 +138,11 @@ void Queue::printQueue()
         std::cout << i << " ";
     }
     std::cout << "\n";
+}
+
+int Queue::capacity()
+{
+    return maxCapacity;
 }
 
 /* ============================== END OF QUEUE IMPLEMENTATION CODES ============================== */
@@ -153,7 +160,7 @@ void demoOne()
     q.enqueue(40);
 
     // print the queue
-    q.printQueue();
+    q.display();
 
     // .peek() for the front element
     std::cout << "Front: " << q.peek() << "\n";
@@ -164,34 +171,35 @@ void demoOne()
     // .size() to get the size of the queue
     std::cout << "Size: " << q.size() << "\n";
 
-    // .isEmpty() to check if the queue is empty
-    std::cout << "Empty condition: " << (q.isEmpty() ? "True" : "False") << "\n";
+    // .is_empty() to check if the queue is empty
+    std::cout << "Empty condition: " << (q.is_empty() ? "True" : "False") << "\n";
 
     // .dequeue() to dequeue the front element
     std::cout << "\nDequeuing the front element, number 10:\n";
     q.dequeue();
-    q.printQueue();
+    q.display();
 
     // .enqueue() to add an element to the queue
     std::cout << "\nEnqueuing the number 10 back to the queue:\n";
     q.enqueue(10);
-    q.printQueue();
+    q.display();
     
 
     // dequeuing all elements to clear the queue
     std::cout << "\nClearing the queue:\n";
-    while (!q.isEmpty()) {
+    while (!q.is_empty()) {
         q.dequeue();
     }
-    q.printQueue();
+    q.display();
 
-    std::cout << "Empty condition: " << (q.isEmpty() ? "True" : "False") << "\n\n";
+    std::cout << "Empty condition: " << (q.is_empty() ? "True" : "False") << "\n\n";
 }
 
 void demoTwo()
 {
-    std::cout << "Creating a queue with a max capacity of 5:\n";
+    std::cout << "Creating a queue with a max capacity of ";
     Queue q(5);
+    std::cout << q.capacity() << ":\n";
 
     // add some elements to the queue
     q.enqueue(10);
@@ -201,7 +209,7 @@ void demoTwo()
     q.enqueue(50);
 
     // print the queue
-    q.printQueue();
+    q.display();
 
     // will print an error when you try to enqueue when the queue is full
     std::cout << "\nEnqueuing the number 60...\n";

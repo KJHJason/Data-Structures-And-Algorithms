@@ -16,9 +16,10 @@
     - pop: O(1)
     - peek: O(1)
     - size: O(1)
-    - isEmpty: O(1)
-    - isFull: O(1)
-    - printStack: O(n)
+    - is_empty: O(1)
+    - is_full: O(1)
+    - display: O(n)
+    - capacity: O(1)
 
     Note: This function will vector for a dynamic array size instead of C array.
 */
@@ -37,10 +38,11 @@ class Stack {
         int peek();
         int size();
 
-        bool isEmpty();
-        bool isFull();
+        bool is_empty();
+        bool is_full();
 
-        void printStack();
+        void display();
+        int capacity();
 };
 
 // destructor function to clear vector
@@ -57,7 +59,7 @@ Stack::Stack(int maxCap) {
 
 void Stack::push(int x)
 {
-    if (isFull()) {
+    if (is_full()) {
         std::cout << "Error: Stack Overflow\n";
         return;
     }
@@ -70,7 +72,7 @@ void Stack::push(int x)
 }
 void Stack::pop()
 {
-    if (isEmpty()) {
+    if (is_empty()) {
         std::cout << "Error: Stack Underflow";
         return;
     }
@@ -84,7 +86,7 @@ void Stack::pop()
 
 int Stack::peek()
 {
-    if (isEmpty()) {
+    if (is_empty()) {
         std::cout << "Stack is Empty";
         return -1;
     }
@@ -98,20 +100,20 @@ int Stack::size()
     return currentSize;
 }
 
-bool Stack::isFull()
+bool Stack::is_full()
 {
     if (maxCapacity != 0) return (size() == maxCapacity);
     return 0;
 }
 
-bool Stack::isEmpty()
+bool Stack::is_empty()
 {
     return (size() == 0);
 }
 
-void Stack::printStack()
+void Stack::display()
 {
-    if (isEmpty()) {
+    if (is_empty()) {
         std::cout << "Unable to print: Stack is empty\n";
         return;
     }
@@ -121,6 +123,11 @@ void Stack::printStack()
         std::cout << arr[i] << " ";
     }
     std::cout << "\n";
+}
+
+int Stack::capacity()
+{
+    return maxCapacity;
 }
 
 /* ================================= END OF STACK IMPLEMENTATION CODES ================================= */
@@ -142,7 +149,7 @@ void demoOne()
     s.push(20);
     s.push(30);
     s.push(40);
-    s.printStack();
+    s.display();
 
     // .top() to get the top element of the stack
     std::cout << "Top: " << s.peek();
@@ -152,30 +159,30 @@ void demoOne()
     nl();
     s.pop();
     std::cout << "After popping the top element from the stack:\n";
-    s.printStack();
+    s.display();
 
     // .push() to add enqueue data to the stack
     nl();
     int n{60}; s.push(n);
     std::cout << "After pushing the number " << std::to_string(n) << " (from top to bottom): \n";
-    s.printStack();
+    s.display();
     nl();
 
     // .size() to get the size of the stack
     std::cout << "Size: " << s.size() << "\n";
     // .empty() to check if the stack is empty
-    std::cout << "Empty condition: " << (s.isEmpty() ? "True" : "False") << "\n";
+    std::cout << "Empty condition: " << (s.is_empty() ? "True" : "False") << "\n";
     nl();
 
     // pop all elements in stack
     std::cout << "After clearing the stack:\n";
-    while (!s.isEmpty()) {
+    while (!s.is_empty()) {
         s.pop();
     }
-    s.printStack();
+    s.display();
 
     // .empty() to check if the stack is empty
-    std::cout << "Empty condition: " << (s.isEmpty() ? "True" : "False") << "\n";
+    std::cout << "Empty condition: " << (s.is_empty() ? "True" : "False") << "\n";
 }
 
 void demoTwo()
@@ -184,13 +191,14 @@ void demoTwo()
     Stack s(5);
 
     // .push() to add enqueue data to the stack
-    std::cout << "Creating a stack with max capacity of 5:\n";
+    std::cout << "Creating a stack with max capacity of ";
+    std::cout << s.capacity() << ":\n";
     s.push(10);
     s.push(20);
     s.push(30);
     s.push(40);
     s.push(50);
-    s.printStack();
+    s.display();
 
     // will print an error when you try to enqueue when the stack is full
     std::cout << "\nPushing the number 60...\n";
