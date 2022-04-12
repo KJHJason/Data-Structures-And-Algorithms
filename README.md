@@ -11,6 +11,6 @@ Contributions to this repository are welcome.
 Goals to graduate from being a noobgrammer.
 
 ## Notes
-Note that this is for educational purposes. 
+This is for educational purposes. 
 
 Implement the code to your project at your own risk.
