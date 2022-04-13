@@ -76,8 +76,6 @@ void lowercase(std::string &str)
 
 int main()
 {
-    vs arr;
-
     std::string promptInput;
     while (1) {
         std::cout << "Do you want to manually enter elements or randomly generate nth numbers of elements?\n";
@@ -93,6 +91,7 @@ int main()
         }
     }
 
+    vs arr;
     if (promptInput == "y") {
         std::cout << "\nPlease enter elements in this format:\nelement1 element2 element2 (with spaces as the delimiter)\nx (finally enter x to stop)\n\n";
         std::cout << "Enter elements for searching later (x to stop):\n";
