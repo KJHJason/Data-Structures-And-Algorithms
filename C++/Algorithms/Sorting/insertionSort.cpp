@@ -26,7 +26,7 @@ void insertionSort(vi& arr, int n)
         int j = i - 1;
         
         // Move all the elements greater than int variable el by one index to the right ahead of their current position
-        while (j >= 0 && arr[j ] > el) {
+        while (j >= 0 && arr[j] > el) {
             arr[j + 1] = arr[j];
             j--;
         }
