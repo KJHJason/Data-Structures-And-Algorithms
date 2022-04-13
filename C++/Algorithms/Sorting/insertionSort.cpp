@@ -23,13 +23,14 @@ void insertionSort(vi& arr, int n)
     for (int i = 1; i < n; i++) {
         int el = arr[i]; // save the value to be positioned
 
-        int j = i;
-        // find the position where the value fits in the ordered part of the list
-        while (j >= 0 && arr[j - 1] > el) {
-            arr[j] = arr[j - 1];
+        int j = i - 1;
+        
+        // Move all the elements greater than int variable el by one index to the right ahead of their current position
+        while (j >= 0 && arr[j ] > el) {
+            arr[j + 1] = arr[j];
             j--;
         }
-        arr[j] = el;
+        arr[j + 1] = el;
     }
 }
 
