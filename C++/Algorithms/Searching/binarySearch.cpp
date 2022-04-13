@@ -98,6 +98,7 @@ int main()
         std::cout << "Enter elements for searching later (x to stop):\n";
         while (1) {
             std::string x; std::cin >> x;
+            lowercase(x);
             if (x == "x") break;
             arr.push_back(x);
         }
@@ -122,6 +123,7 @@ int main()
 
     std::cout << "\nEnter the element to search for: ";
     std::string s; std::cin >> s;
+    lowercase(s);
 
     if (iterativeBinarySearch(arr, s, l, r) != -1) {
         std::cout << "Element found: " << s << " via iterative binary search\n";
