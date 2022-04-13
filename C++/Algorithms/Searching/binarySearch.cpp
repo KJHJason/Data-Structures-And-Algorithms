@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <cstdlib>
 
-typedef std::vector<int> vi;
+typedef std::vector<std::string> vs;
 
-int iterativeBinarySearch(const vi& arr, const int& elementToFind, int& l, int& r)
-{
-    /*
+/*
     * Iterative Binary Search Details:
     * This is a search algorithm that works by dividing the array into two parts, the left part and the right part.
     * The left part contains all the elements that are smaller than the element to be found.
@@ -17,7 +17,9 @@ int iterativeBinarySearch(const vi& arr, const int& elementToFind, int& l, int& 
     * Average time complexity: O(log n)
     * Worst time complexity: O(log n)
     * Space complexity: O(1)
-    */
+*/
+int iterativeBinarySearch(const vs& arr, const std::string& elementToFind, int& l, int& r)
+{
     while (l <= r) {
         int mid = l + (r - l) / 2;
 
@@ -48,7 +50,7 @@ int iterativeBinarySearch(const vi& arr, const int& elementToFind, int& l, int& 
     * Worst time complexity: O(log n)
     * Space complexity: O(1)
 */
-int recursiveBinarySearch(const vi& arr, const int& elementToFind, int l, int r)
+int recursiveBinarySearch(const vs& arr, const std::string& elementToFind, int l, int r)
 {
     if (r >= l) {
         int mid = l + (r - l) / 2;
@@ -66,32 +68,71 @@ int recursiveBinarySearch(const vi& arr, const int& elementToFind, int l, int r)
     return -1; // return -1 if element does not exist in array
 }
 
+// function to convert string to lowercase
+void lowercase(std::string &str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+}
+
 int main()
 {
-    std::cout << "How many elements to generate?: ";
-    int n; std::cin >> n;
-    vi arr;
-    for (int i = 0; i < n; i++) {
-        arr.push_back(i);
-    }
-    int l = 0; 
-    int r = arr.size() - 1; // -1 to account for indexing
+    vs arr;
 
-    std::cout << "Elements has been generated (0 - " << n - 1 << ")...\n";
+    std::string promptInput;
+    while (1) {
+        std::cout << "Do you want to manually enter elements or randomly generate nth numbers of elements?\n";
+        std::cout << "Enter \"y\" to manually enter or \"n\" to generate nth numbers of elements: ";
+        std::cin >> promptInput;
+        lowercase(promptInput);
+        if (promptInput == "y" || promptInput == "n") {
+            break;
+        }
+        else {
+            std::cout << "Invalid input. Please enter \"y\" or \"n\"!\n\n";
+            continue;
+        }
+    }
+
+    if (promptInput == "y") {
+        std::cout << "\nPlease enter elements in this format:\nelement1 element2 element2 (with spaces as the delimiter)\nx (finally enter x to stop)\n\n";
+        std::cout << "Enter elements for searching later (x to stop):\n";
+        while (1) {
+            std::string x; std::cin >> x;
+            if (x == "x") break;
+            arr.push_back(x);
+        }
+    }
+    else {
+        std::cout << "\nPlease enter the number of elements you want to generate: ";
+        int n; std::cin >> n;
+        std::cout << "Elements generated:\n";
+        for (int i = 0; i < n; i++) {
+            int ran = std::rand() % 1000 + 1;
+            arr.push_back(std::to_string(ran));
+            std::cout << ran << " ";
+        }
+        std::cout << "\n";
+    }
+    
+    std::sort(arr.begin(), arr.end());
+
+    int n = arr.size();
+    int l = 0; 
+    int r = n - 1; // -1 to account for indexing
 
     std::cout << "\nEnter the element to search for: ";
-    int x; std::cin >> x;
+    std::string s; std::cin >> s;
 
-    if (iterativeBinarySearch(arr, x, l, r) != -1) {
-        std::cout << "Element found: " << x << " via iterative binary search\n";
+    if (iterativeBinarySearch(arr, s, l, r) != -1) {
+        std::cout << "Element found: " << s << " via iterative binary search\n";
     } else {
-        std::cout << "Element not found\n";
+        std::cout << "Element \"" << s << "\" not found\n";
     }
 
-    if (recursiveBinarySearch(arr, x, l ,r) != -1) {
-        std::cout << "Element found: " << x << " via recursive binary search\n";
+    if (recursiveBinarySearch(arr, s, l ,r) != -1) {
+        std::cout << "Element found: " << s << " via recursive binary search\n";
     } else {
-        std::cout << "Element not found\n";
+        std::cout << "Element \"" << s << "\" not found\n";
     }
     return 0;
 }
