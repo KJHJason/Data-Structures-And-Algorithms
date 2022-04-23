@@ -27,7 +27,7 @@ void bubbleSort(vi& arr, int n)
 {
     bool flag = false;
     for (int i=0; i < n; i++) {
-        for (int j=0; j < n-1; j++) {
+        for (int j=0; j < n-i-1; j++) { // -i to stop at last i element
             if (arr[j] > arr[j+1]) {
                 std::swap(arr[j], arr[j+1]);
                 flag = true;
