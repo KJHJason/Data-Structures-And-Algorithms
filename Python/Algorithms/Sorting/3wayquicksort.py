@@ -99,9 +99,9 @@ def three_way_quicksort(arr, low, high, reverse=0):
     Advantages of 3way quicksort over the traditional quicksort algorithm is that it is able to sort the array quicker if there are many duplicate values.
     
     Time Complexities:
-    - Best case: O(n(log(n)))
+    - Best case: O(n log n)
     - Worst case: O(n^2)
-    - Average case: O(n(log(n)))
+    - Average case: O(n log n)
     
     Space Complexity:
     - O(1) in this function
