@@ -39,9 +39,13 @@ void shuffle(vi& arr, int n)
 */
 void bogoSort(vi& arr, int n)
 {
-    do {
+    int count{};
+    // shuffle the array until it's sorted
+    while (!isSorted(arr, n)) {
         shuffle(arr, n);
-    } while (!isSorted(arr, n)); // shuffle the array until it's sorted
+        count++;
+    }
+    std::cout << "\nBogo sort took " << count << " shuffles to sort the array!\n";
 }
 
 int main()
@@ -57,7 +61,6 @@ int main()
         arr.push_back(x);
     }
 
-    std::cout << "\nSorted elements:\n";
     bogoSort(arr, n);
     for (const auto& i: arr) std::cout << i << " ";
     return 0;
