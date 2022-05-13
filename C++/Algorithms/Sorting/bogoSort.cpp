@@ -39,7 +39,7 @@ void shuffle(vi& arr, int n)
 */
 void bogoSort(vi& arr, int n)
 {
-    int count{};
+    unsigned long long int count{};
     // shuffle the array until it's sorted
     while (!isSorted(arr, n)) {
         shuffle(arr, n);
