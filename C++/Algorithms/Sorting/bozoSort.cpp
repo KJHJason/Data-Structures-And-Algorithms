@@ -16,11 +16,7 @@ bool is_sorted(const vi& arr, int n)
 
 void swap_two_random_elements(vi& arr, const int& n)
 {
-    int i, j;
-    do {
-        i = rand() % n;
-        j = rand() % n;
-    } while (i == j);
+    int i{rand() % n}, j{rand() % n};
     std::swap(arr[i], arr[j]);
 }
 
