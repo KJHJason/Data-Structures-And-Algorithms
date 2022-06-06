@@ -121,29 +121,33 @@ def intro_sort_process(arr:list, start:int, end:int, maxDepth:int, reverse:bool=
 # test codes below
 if (__name__ == "__main__"):
     import timeit, random, re
-    from typing import Union
 
     NUM_REGEX = re.compile(r"\d+")
 
     # test class since this implementation uses the method
     # .get_package_name() for the main program (main.py)
     class TestObject:
-        def __init__(self, data:Union[int, str]):
+        def __init__(self, data:int):
             self.__data = data
 
-        def get_package_name(self) -> Union[int, str]:
+        def get_package_name(self) -> int:
             return self.__data
 
         @property
-        def data(self) -> Union[int, str]:
+        def data(self) -> int:
             return self.__data
 
         # mode parameter is useless in this test codes
-        def get_val(self, attribute:str) -> Union[int, str]:
+        def get_val(self, attribute:str) -> int:
             return self.__data
 
         def __repr__(self) -> str:
             return str(self.__data)
+
+    def get_nearly_sorted_array(n:int) -> list:
+        lengthOfPosibleValues = n // 2
+        possibility = [1 for _ in range(lengthOfPosibleValues - 1)] + [2] # 1 in 50 chance of multiplying by 2
+        return [TestObject(random.choice(possibility) * i) for i in range(n)]
 
     def check_if_sorted(arr:list, reverse:bool=False) -> int:
         """
@@ -201,6 +205,7 @@ if (__name__ == "__main__"):
     print("-" * len(HEADER_ONE), end="\n\n")
 
     # Nearly sorted arrays
+    arr = get_nearly_sorted_array(numOfRecords)
     HEADER_TWO = "-" * 13 + " NEARLY SORTED ARRAYS " + "-" * 13
     print(HEADER_TWO)
 
