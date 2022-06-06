@@ -3,7 +3,7 @@
 This repository contains my code for various data structures and algorithms.
 
 This repository also contains the source code for my assignments:
-- NYP Data Structures & Algorithms Assignment (40%)
+- [NYP Data Structures & Algorithms Assignment (40%)](/NYP-DSA-Assignment)
 
 In each file, there will be some explanations of the data structures or algorithms so that you wil be able to understand the concepts easily.
 
