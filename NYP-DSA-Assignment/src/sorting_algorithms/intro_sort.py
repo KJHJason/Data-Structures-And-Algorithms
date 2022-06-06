@@ -138,6 +138,7 @@ if (__name__ == "__main__"):
             return self.__data
 
         # mode parameter is useless in this test codes
+        # but it is required since the main program has this method that passes in an argument
         def get_val(self, attribute:str) -> int:
             return self.__data
 
