@@ -145,8 +145,8 @@ if (__name__ == "__main__"):
             return str(self.__data)
 
     def get_nearly_sorted_array(n:int) -> list:
-        lengthOfPosibleValues = n // 2
-        possibility = [1 for _ in range(lengthOfPosibleValues - 1)] + [2] # 1 in 50 chance of multiplying by 2
+        lengthOfPosibleValues = (n - 1) // 2
+        possibility = [1 for _ in range(lengthOfPosibleValues)] + [2] # 1 in (n-1)/2 chance of multiplying by 2
         return [TestObject(random.choice(possibility) * i) for i in range(n)]
 
     def check_if_sorted(arr:list, reverse:bool=False) -> int:
