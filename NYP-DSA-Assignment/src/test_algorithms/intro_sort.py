@@ -5,18 +5,55 @@ from math import floor, log2
 if (__package__ is None or __package__ == ''):
     from insertion_sort import insertion_sort
     from heap_sort import heap_sort
-    from quicksort_utility_functions import median_of_3, partition
+    from quicksorts import median_of_3
 else:
     from .insertion_sort import insertion_sort
     from .heap_sort import heap_sort
-    from .quicksort_utility_functions import median_of_3, partition
+    from .quicksorts import median_of_3
 
 # define the maximum length of the array before using insertion sort
 SIZE_THRESHOLD = 16 # if less than or equal to 16 elements, introsort will use insertion sort.
                     # I used the integer 16 as the threshold because GNU Standard C++ library also uses it;
                     # https://gcc.gnu.org/onlinedocs/gcc-12.1.0/libstdc++/api/a00650_source.html#l01838
 
-def intro_sort(arr:list, reverse:bool=False) -> None:
+def partition(arr:list[int], low:int, high:int, pivot:int, reverse:bool=False) -> int:
+    """
+    Partitions the array into two parts:
+    - arr[low...i] contains all the elements smaller than the pivot
+    - arr[i+1...high] contains all the elements larger than the pivot
+    """
+    i = low
+    j = high - 1
+    while (1):
+        if (not reverse):
+            # find the first element in the array which is smaller than the pivot
+            while (arr[i] < pivot):
+                i += 1
+
+            # find the first element in the array which is larger than the pivot
+            while (arr[j] > pivot):
+                j -= 1
+        else:
+            # find the first element in the array which is larger than the pivot
+            while (arr[i] > pivot):
+                i += 1
+
+            # find the first element in the array which is smaller than the pivot
+            while (arr[j] < pivot):
+                j -= 1
+
+        # if the two pointers have crossed, return i
+        if (i >= j):
+            return i
+
+        # swap the two elements that are not in the correct position
+        # e.g. [1, 5, 3, 2, 4], pivot = 3 (element), i = 1, j = 3
+        # swap 5 and 2 and the array becomes [1, 2, 3, 5, 4]
+        arr[i], arr[j] = arr[j], arr[i]
+        i += 1
+        j -= 1
+
+def intro_sort(arr:list[int], reverse:bool=False) -> None:
     """
     Introsort or introspective sort is a hybrid sorting algorithm that consists of quick sort, 
     heap sort, and insertion sort.
@@ -69,7 +106,7 @@ def intro_sort(arr:list, reverse:bool=False) -> None:
 
     intro_sort_process(arr, 0, len(arr), maxDepth, reverse=reverse)
 
-def intro_sort_process(arr:list, start:int, end:int, maxDepth:int, reverse:bool=False) -> None:
+def intro_sort_process(arr:list[int], start:int, end:int, maxDepth:int, reverse:bool=False) -> None:
     """
     The main function that implements the introsort algorithm with reference to
     C++ Standard Library's std::sort();
@@ -78,7 +115,7 @@ def intro_sort_process(arr:list, start:int, end:int, maxDepth:int, reverse:bool=
     Requires 5 arguments:
     - arr (list): The array of elements to sort by package name
     - start (int): The starting index of the array
-    - end (int): The length of the array/highest index + 1
+    - end (int): The lenght of the arrayy/highest index + 1
     - maxDepth (int): The max recursion depth of the algorithm before using heap sort
     - reverse (bool): True if the list is to be sorted in descending order (Default: False)
     """
@@ -98,7 +135,7 @@ def intro_sort_process(arr:list, start:int, end:int, maxDepth:int, reverse:bool=
         maxDepth -= 1
 
         # get the pivot for quick sort using the median of three concept
-        pivot = median_of_3(arr, start, start + ((end - start) // 2), end - 1).get_package_name()
+        pivot = median_of_3(arr, start, start + ((end - start) // 2), end - 1)
 
         # partition the array around the pivot
         partitionRes = partition(arr, start, end, pivot, reverse=reverse)
@@ -116,7 +153,7 @@ def intro_sort_process(arr:list, start:int, end:int, maxDepth:int, reverse:bool=
 
     # base case 2
     # use insertion sort to sort the array/sub-array for smaller arrays as it is faster
-    return insertion_sort(arr, startIdx=start, endIdx=end, reverse=reverse, mode="packageName")
+    return insertion_sort(arr, startIdx=start, endIdx=end, reverse=reverse)
 
 # test codes below
 if (__name__ == "__main__"):
@@ -124,31 +161,10 @@ if (__name__ == "__main__"):
 
     NUM_REGEX = re.compile(r"\d+")
 
-    # test class since this implementation uses the method
-    # .get_package_name() for the main program (main.py)
-    class TestObject:
-        def __init__(self, data:int):
-            self.__data = data
-
-        def get_package_name(self) -> int:
-            return self.__data
-
-        @property
-        def data(self) -> int:
-            return self.__data
-
-        # mode parameter is useless in this test codes
-        # but it is required since the main program has this method that passes in an argument
-        def get_val(self, attribute:str) -> int:
-            return self.__data
-
-        def __repr__(self) -> str:
-            return str(self.__data)
-
     def get_nearly_sorted_array(n:int) -> list:
         lengthOfPosibleValues = (n - 1) // 2
         possibility = [1 for _ in range(lengthOfPosibleValues)] + [2] # 1 in (n-1)/2 chance of multiplying by 2
-        return [TestObject(random.choice(possibility) * i) for i in range(n)]
+        return [random.choice(possibility) * i for i in range(n)]
 
     def check_if_sorted(arr:list, reverse:bool=False) -> int:
         """
@@ -156,10 +172,10 @@ if (__name__ == "__main__"):
         """
         for i in range(0, len(arr)-1):
             if (reverse):
-                if (arr[i].data < arr[i+1].data):
+                if (arr[i] < arr[i+1]):
                     return 0
             else:
-                if (arr[i].data > arr[i+1].data):
+                if (arr[i] > arr[i+1]):
                     return 0
         return 1
 
@@ -178,7 +194,7 @@ if (__name__ == "__main__"):
     print()
     HEADER_ONE = "-" * 15 + " RANDOMISED ARRAY " + "-" * 15
     print(HEADER_ONE)
-    arr = [TestObject(random.randint(0, 100000)) for _ in range(numOfRecords)]
+    arr = [random.randint(0, 100000) for _ in range(numOfRecords)]
 
     # test the introsort algorithm (ascending order)
     print("\nSorting the array in ascending order...", end="")
