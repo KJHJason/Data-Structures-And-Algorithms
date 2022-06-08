@@ -1,3 +1,18 @@
+def get_max(arr:list[int]) -> int:
+    """
+    Get the maximum element in the array.
+    Note: Not using Python's max function as it is coded in C which is not really representative of
+    the actual performance of the algorithm.
+    
+    Requires 1 argument:
+    - arr (list): The array of elements to get the maximum element from
+    """
+    maxEl = arr[0]
+    for i in range(1, len(arr)):
+        if (arr[i] > maxEl):
+            maxEl = arr[i]
+    return maxEl
+
 def counting_sort_for_radix_sort(arr:list[int], place:int, reverse:bool=False) -> None:
     """
     Counting sort for radix sort.
@@ -77,7 +92,7 @@ def radix_sort(arr:list, reverse:bool=False) -> None:
         - https://www.youtube.com/watch?v=XiuSW_mEn7g&feature=youtu.be
     """
     # Find the maximum number to know number of digits
-    maxEl = max(arr)
+    maxEl = get_max(arr)
 
     # Do counting sort for every digit based on palce value
     place = 1
