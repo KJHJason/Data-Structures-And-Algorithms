@@ -419,7 +419,7 @@ def main() -> None:
                 testHistory[QUICK_SORT + TEST1] = verdict
                 del testArr
             except (RecursionError):
-                print(f"{F.LIGHTRED_EX}Quick sort (nearly sorted array) failed due to recursion error...")
+                print(f"{F.LIGHTRED_EX}Quick sort (nearly sorted array): {verdict}Recursion error!")
                 S_reset()
                 testHistory[QUICK_SORT + TEST1] = verdict + RECURSION_ERROR
 
@@ -432,7 +432,7 @@ def main() -> None:
                 testHistory[QUICK_SORT + TEST2] = verdict
                 del testArr
             except (RecursionError):
-                print(f"{F.LIGHTRED_EX}Quick sort (nearly sorted array, descending) failed due to recursion error...")
+                print(f"{F.LIGHTRED_EX}Quick sort (nearly sorted array, descending): {verdict}Recursion error!")
                 S_reset(nl=True)
                 testHistory[QUICK_SORT + TEST2] = verdict + RECURSION_ERROR
 
@@ -445,7 +445,7 @@ def main() -> None:
                 testHistory[QUICK_SORT + TEST3] = verdict
                 del testArr
             except (RecursionError):
-                print(f"{F.LIGHTRED_EX}Quick sort (random array) failed due to recursion error...")
+                print(f"{F.LIGHTRED_EX}Quick sort (random array): {verdict}Recursion error!")
                 S_reset()
                 testHistory[QUICK_SORT + TEST3] = verdict + RECURSION_ERROR
 
@@ -458,7 +458,7 @@ def main() -> None:
                 testHistory[QUICK_SORT + TEST4] = verdict
                 del testArr
             except (RecursionError):
-                print(f"{F.LIGHTRED_EX}Quick sort (random array, descending) failed due to recursion error...")
+                print(f"{F.LIGHTRED_EX}Quick sort (random array, descending): {verdict}Recursion error!")
                 S_reset(nl=True)
                 testHistory[QUICK_SORT + TEST4] = verdict + RECURSION_ERROR
 
@@ -476,7 +476,7 @@ def main() -> None:
                 testHistory[THREE_WAY_QUICKSORT + TEST1] = verdict
                 del testArr
             except (RecursionError):
-                print(f"{F.LIGHTRED_EX}3-way Quick sort (nearly sorted array) failed due to recursion error...")
+                print(f"{F.LIGHTRED_EX}3-way Quick sort (nearly sorted array): {verdict}Recursion error!")
                 S_reset()
                 testHistory[THREE_WAY_QUICKSORT + TEST1] = verdict + RECURSION_ERROR
 
@@ -489,7 +489,7 @@ def main() -> None:
                 testHistory[THREE_WAY_QUICKSORT + TEST2] = verdict
                 del testArr
             except (RecursionError):
-                print(f"{F.LIGHTRED_EX}3-way Quick sort (nearly sorted array, descending) failed due to recursion error...")
+                print(f"{F.LIGHTRED_EX}3-way Quick sort (nearly sorted array, descending): {verdict}Recursion error!")
                 S_reset(nl=True)
                 testHistory[THREE_WAY_QUICKSORT + TEST2] = verdict + RECURSION_ERROR
 
@@ -502,7 +502,7 @@ def main() -> None:
                 testHistory[THREE_WAY_QUICKSORT + TEST3] = verdict
                 del testArr
             except (RecursionError):
-                print(f"{F.LIGHTRED_EX}3-way Quick sort (random array) failed due to recursion error...")
+                print(f"{F.LIGHTRED_EX}3-way Quick sort (random array): {verdict}Recursion error!")
                 S_reset()
                 testHistory[THREE_WAY_QUICKSORT + TEST3] = verdict + RECURSION_ERROR
 
@@ -515,7 +515,7 @@ def main() -> None:
                 testHistory[THREE_WAY_QUICKSORT + TEST4] = verdict
                 del testArr
             except (RecursionError):
-                print(f"{F.LIGHTRED_EX}3-way Quick sort (random array, descending) failed due to recursion error...")
+                print(f"{F.LIGHTRED_EX}3-way Quick sort (random array, descending): {verdict}Recursion error!")
                 S_reset(nl=True)
                 testHistory[THREE_WAY_QUICKSORT + TEST4] = verdict + RECURSION_ERROR
 
@@ -657,20 +657,38 @@ def main() -> None:
             S_reset()
 
             testVerdict = ""
+            recursionError = False
             for result in testHistory.values():
-                if (result.strip() != CORRECT):
+                if (result.strip() != CORRECT and result.strip() != RECURSION_ERROR):
                     testVerdict = "error"
                     break
+                elif (result.strip() == RECURSION_ERROR):
+                    recursionError = True
 
-            if (testVerdict == ""):
+            if (testVerdict == "" and not recursionError):
                 print(f"{F.LIGHTGREEN_EX}Status: OK!")
+                S_reset()
+            elif (testVerdict == "" and recursionError):
+                print(f"{F.LIGHTRED_EX}Status: FAILED DUE TO RECURSION ERROR!")
+                S_reset(nl=True)
+                logResultsInput = get_input(prompt=f"Would you like to log the results? (y/n): ", command=("y", "n"))
+                if (logResultsInput == "y"):
+                    additionalTextHeader = "Additional information:\n"
+                    additionalTextOne = "Nearly sorted array: \n" + str(arrOne) + "\n"
+                    additionalTextTwo = "Randomised array:\n" + str(arrTwo)
+                    log_results(SORT_CORRECTNESS_LOG, testHistory, additionalTextHeader, additionalTextOne, additionalTextTwo)
+                else:
+                    print(f"{F.LIGHTYELLOW_EX}Results will not be logged.")
+                    S_reset()
             else:
-                print(f"{F.LIGHTRED_EX}Status: FAILED!")
+                print(f"{F.LIGHTRED_EX}Status: FAILED, WILL BE LOGGED FOR DEBUGGING!")
+                S_reset()
                 additionalTextHeader = "Additional information:\n"
                 additionalTextOne = "Nearly sorted array: \n" + str(arrOne) + "\n"
                 additionalTextTwo = "Randomised array:\n" + str(arrTwo)
                 log_results(SORT_CORRECTNESS_LOG, testHistory, additionalTextHeader, additionalTextOne, additionalTextTwo)
-            S_reset()
+
+        # -----------------------------------------------------------------------------------------------------------------------------------------------------
 
         elif (uInput == "2"):
             # test the time taken to sort
@@ -913,7 +931,7 @@ def main() -> None:
                 print(f"Quick sort (nearly sorted array): {timeTaken}")
                 testResults[QUICK_SORT + TEST1] = timeTaken
             except (RecursionError):
-                print(f"Quick sort (nearly sorted array): {timeTaken}{F.LIGHTRED_EX}Recursion error!")
+                print(f"{F.LIGHTRED_EX}Quick sort (nearly sorted array): {timeTaken}Recursion error!")
                 S_reset()
                 testResults[QUICK_SORT + TEST1] = timeTaken + RECURSION_ERROR
 
@@ -925,7 +943,7 @@ def main() -> None:
                 print(f"Quick sort (nearly sorted array, descending): {timeTaken}\n")
                 testResults[QUICK_SORT + TEST2] = timeTaken
             except (RecursionError):
-                print(f"Quick sort (nearly sorted array, descending): {timeTaken}{F.LIGHTRED_EX}Recursion error!")
+                print(f"{F.LIGHTRED_EX}Quick sort (nearly sorted array, descending): {timeTaken}Recursion error!")
                 S_reset(nl=True)
                 testResults[QUICK_SORT + TEST2] = timeTaken + RECURSION_ERROR
 
@@ -937,7 +955,7 @@ def main() -> None:
                 print(f"Quick sort (random array): {timeTaken}")
                 testResults[QUICK_SORT + TEST3] = timeTaken
             except (RecursionError):
-                print(f"Quick sort (random array): {timeTaken}{F.LIGHTRED_EX}Recursion error!")
+                print(f"{F.LIGHTRED_EX}Quick sort (random array): {timeTaken}Recursion error!")
                 S_reset()
                 testResults[QUICK_SORT + TEST3] = timeTaken + RECURSION_ERROR
 
@@ -949,7 +967,7 @@ def main() -> None:
                 print(f"Quick sort (random array, descending): {timeTaken}\n")
                 testResults[QUICK_SORT + TEST4] = timeTaken
             except (RecursionError):    
-                print(f"Quick sort (random array, descending): {timeTaken}{F.LIGHTRED_EX}Recursion error!")
+                print(f"{F.LIGHTRED_EX}Quick sort (random array, descending): {timeTaken}Recursion error!")
                 S_reset(nl=True)
                 testResults[QUICK_SORT + TEST4] = timeTaken + RECURSION_ERROR
 
@@ -966,7 +984,7 @@ def main() -> None:
                 print(f"3-way quick sort (nearly sorted array): {timeTaken}")
                 testResults[THREE_WAY_QUICKSORT + TEST1] = timeTaken
             except (RecursionError):
-                print(f"3-way quick sort (nearly sorted array): {timeTaken}{F.LIGHTRED_EX}Recursion error!")
+                print(f"{F.LIGHTRED_EX}3-way quick sort (nearly sorted array): {timeTaken}Recursion error!")
                 S_reset()
                 testResults[THREE_WAY_QUICKSORT + TEST1] = timeTaken + RECURSION_ERROR
 
@@ -978,7 +996,7 @@ def main() -> None:
                 print(f"3-way quick sort (nearly sorted array, descending): {timeTaken}\n")
                 testResults[THREE_WAY_QUICKSORT + TEST2] = timeTaken
             except (RecursionError):
-                print(f"3-way quick sort (nearly sorted array, descending): {timeTaken}{F.LIGHTRED_EX}Recursion error!")
+                print(f"{F.LIGHTRED_EX}3-way quick sort (nearly sorted array, descending): {timeTaken}Recursion error!")
                 S_reset(nl=True)
                 testResults[THREE_WAY_QUICKSORT + TEST2] = timeTaken + RECURSION_ERROR
 
@@ -990,7 +1008,7 @@ def main() -> None:
                 print(f"3-way quick sort (random array): {timeTaken}")
                 testResults[THREE_WAY_QUICKSORT + TEST3] = timeTaken
             except (RecursionError):
-                print(f"3-way quick sort (random array): {timeTaken}{F.LIGHTRED_EX}Recursion error!")
+                print(f"{F.LIGHTRED_EX}3-way quick sort (random array): {timeTaken}Recursion error!")
                 S_reset()
                 testResults[THREE_WAY_QUICKSORT + TEST3] = timeTaken + RECURSION_ERROR
 
@@ -1002,7 +1020,7 @@ def main() -> None:
                 print(f"3-way quick sort (random array, descending): {timeTaken}\n")
                 testResults[THREE_WAY_QUICKSORT + TEST4] = timeTaken
             except (RecursionError):
-                print(f"3-way quick sort (random array, descending): {timeTaken}{F.LIGHTRED_EX}Recursion error!")
+                print(f"{F.LIGHTRED_EX}3-way quick sort (random array, descending): {timeTaken}Recursion error!")
                 S_reset(nl=True)
                 testResults[THREE_WAY_QUICKSORT + TEST4] = timeTaken + RECURSION_ERROR
 
