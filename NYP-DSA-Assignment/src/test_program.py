@@ -152,7 +152,7 @@ def main() -> None:
         uInput = get_input(prompt="Enter command: ", warning="Please enter a command from the menu above...", command=("1", "2", "x"))
         print()
         if (uInput == "x"):
-            print(f"{F.LIGHTRED_EX}Thank you for using this program and have a nice day!")
+            print(f"{F.LIGHTYELLOW_EX}Thank you for using this program and have a nice day!")
             S_reset(nl=True)
             input("Please press ENTER to exit...")
         elif (uInput == "1"):
