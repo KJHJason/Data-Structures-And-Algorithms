@@ -202,89 +202,23 @@ def _quicksort(arr:list[int], start:int, end:int, reverse:bool=False) -> None:
     - end (int): The length of the array/highest index + 1
     - reverse (bool): Whether the array is sorted in ascending or descending order. Default to False.
     """
-    while (end - start > 1):
-        # get the pivot for quick sort using the median of three concept
-        pivot = median_of_3(arr, start, start + ((end - start) // 2), end - 1)
+    # base case
+    if (end - start <= 1):
+        return 
 
-        # print("\rPivot:", pivot, "Start:", start, "End:", end, end="")
+    # get the pivot for quick sort using the median of three concept
+    pivot = median_of_3(arr, start, start + ((end - start) // 2), end - 1)
 
-        # partition the array around the pivot
-        partitionRes = partition_to_2(arr, start, end, pivot, reverse=reverse)
+    # partition the array around the pivot
+    partitionRes = partition_to_2(arr, start, end, pivot, reverse=reverse)
 
-        # recursive case:
-        # sort right half of the array recursively by changing the start pointer to the pivot
-        _quicksort(arr, partitionRes, end, reverse=reverse)
-        
-        # change pointer of end to sort the left half of the array
-        end = partitionRes
-
-# def partition_to_2(arr:list[int], low:int, high:int, reverse:bool=False) -> int:
-#     """
-#     Unlike the 3-way quicksort, the 2-way quicksort does not partition the array into three parts.
+    # recursive case:
+    # sort right half of the array recursively by changing the start pointer to the pivot
+    _quicksort(arr, partitionRes, end, reverse=reverse)
     
-#     Instead, it partitions the array into two parts:
-#     - arr[low...i] contains all the elements smaller than the pivot
-#     - arr[i+1...high] contains all the elements larger than the pivot
-#     """
-#     # choose the rightmost element as pivot
-#     pivot = arr[high]
-
-#     # pointer for greater element
-#     i = low - 1
-
-#     # traverse through all elements
-#     # compare each element with pivot
-#     for j in range(low, high):
-#         if (not reverse and arr[j] <= pivot):
-#             # if element smaller than pivot is found
-#             # swap it with the greater element pointed by i
-#             i += 1
-#             # swapping element at i with element at j
-#             arr[i], arr[j] = arr[j], arr[i]
-#         elif (reverse and arr[j] >= pivot):
-#             # if element larger than pivot is found
-#             # swap it with the smaller element pointed by i
-#             i += 1
-
-#             # swapping element at i with element at j
-#             arr[i], arr[j] = arr[j], arr[i]
-
-#     # swap the pivot element with the greater element specified by i
-#     arr[i + 1], arr[high] = arr[high], arr[i + 1]
-
-#     # return the position from where partition is done
-#     return i + 1
-
-# def _quicksort(arr:list[int], start:int, end:int, reverse:bool=False) -> None:
-#     """
-#     The quick sort algorithm sorts an array by taking an element as a pivot and 
-#     dividing the array into two parts, one with elements less than the pivot and 
-#     the other with elements greater than the pivot.
-    
-#     Time Complexities:
-#     - Best case: O(n log n)
-#     - Worst case: O(n^2)
-#     - Average case: O(n log n)
-    
-#     Space Complexity:
-#     - O(log n) for the call stack
-    
-#     Args:
-#     - arr (list): The array to be sorted
-#     - start (int): The lower index of the array
-#     - end (int): The length of the array/highest index + 1
-#     - reverse (bool): Whether the array is sorted in ascending or descending order. Default to False.
-#     """
-#     if (start < end):
-#         # partition the array
-        
-#         p = partition_to_2(arr, start, end, reverse=reverse)
-
-#         # sort the left half recursively
-#         _quicksort(arr, start, p - 1, reverse=reverse)
-
-#         # sort the right half recursively
-#         _quicksort(arr, p + 1, end, reverse=reverse)
+    # recursive case:
+    # sort left half of the array recursively by changing the end pointer to the pivot
+    _quicksort(arr, start, partitionRes, reverse=reverse)
 
 def quicksort(arr:list[int], reverse:bool=False) -> None:
     """

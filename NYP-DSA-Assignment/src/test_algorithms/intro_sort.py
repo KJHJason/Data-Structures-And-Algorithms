@@ -5,53 +5,16 @@ from math import floor, log2
 if (__package__ is None or __package__ == ''):
     from insertion_sort import insertion_sort
     from heap_sort import heap_sort
-    from quicksorts import median_of_3
+    from quicksorts import median_of_3, partition_to_2 as partition
 else:
     from .insertion_sort import insertion_sort
     from .heap_sort import heap_sort
-    from .quicksorts import median_of_3
+    from .quicksorts import median_of_3, partition_to_2 as partition
 
 # define the maximum length of the array before using insertion sort
 SIZE_THRESHOLD = 16 # if less than or equal to 16 elements, introsort will use insertion sort.
                     # I used the integer 16 as the threshold because GNU Standard C++ library also uses it;
                     # https://gcc.gnu.org/onlinedocs/gcc-12.1.0/libstdc++/api/a00650_source.html#l01838
-
-def partition(arr:list[int], low:int, high:int, pivot:int, reverse:bool=False) -> int:
-    """
-    Partitions the array into two parts:
-    - arr[low...i] contains all the elements smaller than the pivot
-    - arr[i+1...high] contains all the elements larger than the pivot
-    """
-    i = low
-    j = high - 1
-    while (1):
-        if (not reverse):
-            # find the first element in the array which is smaller than the pivot
-            while (arr[i] < pivot):
-                i += 1
-
-            # find the first element in the array which is larger than the pivot
-            while (arr[j] > pivot):
-                j -= 1
-        else:
-            # find the first element in the array which is larger than the pivot
-            while (arr[i] > pivot):
-                i += 1
-
-            # find the first element in the array which is smaller than the pivot
-            while (arr[j] < pivot):
-                j -= 1
-
-        # if the two pointers have crossed, return i
-        if (i >= j):
-            return i
-
-        # swap the two elements that are not in the correct position
-        # e.g. [1, 5, 3, 2, 4], pivot = 3 (element), i = 1, j = 3
-        # swap 5 and 2 and the array becomes [1, 2, 3, 5, 4]
-        arr[i], arr[j] = arr[j], arr[i]
-        i += 1
-        j -= 1
 
 def intro_sort(arr:list[int], reverse:bool=False) -> None:
     """
