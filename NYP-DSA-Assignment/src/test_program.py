@@ -27,7 +27,7 @@ X. Exit program
 ----------------------------------------------"""
 
 NUM_REGEX = re.compile(r"^\d+$")
-RANDOMNESS = 99999 # randint(0, RANDOMNESS) for generating an array of random numbers between 0 to RANDOMNESS
+RANDOMNESS = 999999 # randint(0, RANDOMNESS) for generating an array of random numbers between 0 to RANDOMNESS
 BASIC_SORT_LIMIT = 10000 # maximum number of elements in the array before testing bubble, selection, and insertion sort as they can take a long time
 
 # logging keys for each sorting algorithms
