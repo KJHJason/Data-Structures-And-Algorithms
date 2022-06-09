@@ -12,7 +12,7 @@ else:
     from .quicksorts import median_of_3, partition_to_2 as partition
 
 # define the maximum length of the array before using insertion sort
-SIZE_THRESHOLD = 16 # if less than or equal to 16 elements, introsort will use insertion sort.
+SIZE_THRESHOLD = 16 # if less than 16 elements, introsort will use insertion sort.
                     # I used the integer 16 as the threshold because GNU Standard C++ library also uses it;
                     # https://gcc.gnu.org/onlinedocs/gcc-12.1.0/libstdc++/api/a00650_source.html#l01838
 
