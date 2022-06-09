@@ -8,8 +8,8 @@ def binary_search(arr:list[int], start:int, end:int, key:int, reverse:bool=False
         key (int): The key to search for
         reverse (bool): True if the list is to be searched in descending order
     
-    Best time complexity: O(logn)
-    Worst time complexity: O(n)
+    Best time complexity: O(1)
+    Worst time complexity: O(logn)
     Average time complexity: O(logn)
     """
     while (start <= end):
