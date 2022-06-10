@@ -14,8 +14,9 @@ sys.setrecursionlimit(1500) # if the program stops unexpectedly, lower the recur
 
 # import local python files
 from functions import get_input, S_reset
-from test_algorithms import merge_sort, quicksorts, bubble_sort, heap_sort, insertion_sort, intro_sort, \
-                            intro_sort_modified, radix_sort, counting_sort, selection_sort, shellsort, tree_sort
+from test_algorithms import merge_sort, quicksorts, bubble_sort, \
+                            heap_sort, insertion_sort, intro_sort, intro_sort_modified, radix_sort,\
+                            counting_sort, selection_sort, shellsort, tree_sort, binary_insertion_sort
 
 SORTING_MENU = """
 -------- Sorting Algorithms Test Menu --------
@@ -29,11 +30,13 @@ X. Exit program
 NUM_REGEX = re.compile(r"^\d+$")
 RANDOMNESS = 999999 # randint(0, RANDOMNESS) for generating an array of random numbers between 0 to RANDOMNESS
 BASIC_SORT_LIMIT = 10000 # maximum number of elements in the array before testing bubble, selection, and insertion sort as they can take a long time
+BIN_INSERTION_SORT_LIMIT = 100000
 
 # logging keys for each sorting algorithms
 BUBBLE_SORT = "Bubble sort"
 SELECTION_SORT = "Selection sort"
 INSERTION_SORT = "Insertion sort"
+BIN_INSERTION_SORT = "Binary insertion sort"
 SHELL_SORT = "Shell sort"
 HEAP_SORT = "Heap sort"
 AVL_TREE_SORT = "AVL Tree sort"
@@ -235,6 +238,7 @@ def main() -> None:
                     del testArr
 
                     # -------------------------------------------------------------------------------
+
                     print(f"{F.LIGHTYELLOW_EX}Testing insertion sort...")
                     S_reset()
 
@@ -270,6 +274,43 @@ def main() -> None:
                 else:
                     print(f"{F.LIGHTRED_EX}Skipping bubble, insertion, and selection sort as it will take too long to sort...")
                     S_reset(nl=True)
+
+                # -------------------------------------------------------------------------------
+
+                if (arrayLen <= BIN_INSERTION_SORT_LIMIT):
+
+                    print(f"{F.LIGHTYELLOW_EX}Testing binary insertion sort...")
+                    S_reset()
+
+                    testArr = arrOne.copy()
+                    binary_insertion_sort.bin_insertion_sort(testArr)
+                    verdict = f"\t\t\t\t{check_if_sorted(testArr)}"
+                    print(f"Binary insertion sort (nearly sorted array): {verdict}")
+                    testHistory[BIN_INSERTION_SORT + TEST1] = verdict
+                    del testArr
+
+                    testArr = arrOne.copy()
+                    binary_insertion_sort.bin_insertion_sort(testArr, reverse=True)
+                    verdict = f"\t\t{check_if_sorted(testArr, reverse=True)}"
+                    print(f"Binary insertion sort (nearly sorted array, descending): {verdict}\n")
+                    testHistory[BIN_INSERTION_SORT + TEST2] = verdict
+                    del testArr
+                    
+                    testArr = arrTwo.copy()
+                    binary_insertion_sort.bin_insertion_sort(testArr)
+                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                    print(f"Binary insertion sort (random array): {verdict}")
+                    testHistory[BIN_INSERTION_SORT + TEST3] = verdict
+                    del testArr
+
+                    testArr = arrTwo.copy()
+                    binary_insertion_sort.bin_insertion_sort(testArr, reverse=True)
+                    verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                    print(f"Binary insertion sort (random array, descending): {verdict}\n")
+                    testHistory[BIN_INSERTION_SORT + TEST4] = verdict
+                    del testArr
+                else:
+                    print(f"{F.LIGHTRED_EX}Skipping binary insertion sort as it will take too long to sort...")
 
                 # --------------------------------------------------------------------------------------------
 
@@ -798,6 +839,38 @@ def main() -> None:
                 else:
                     print(f"{F.LIGHTRED_EX}Skipping bubble, insertion, and selection sort as it will take too long to sort...")
                     S_reset(nl=True)
+
+                # --------------------------------------------------------------------------------------------
+
+                if (arrayLen <= BIN_INSERTION_SORT_LIMIT):
+                    print(f"{F.LIGHTYELLOW_EX}Testing binary insertion sort...")
+                    S_reset()
+
+                    testArr = arrOne.copy()
+                    timeTaken = f"\t\t\t\t{timeit.timeit(lambda: binary_insertion_sort.bin_insertion_sort(testArr), number=1)}"
+                    del testArr
+                    print(f"Binary insertion sort (nearly sorted array): {timeTaken}")
+                    testResults[BIN_INSERTION_SORT + TEST1] = timeTaken
+
+                    testArr = arrOne.copy()
+                    timeTaken = f"\t\t{timeit.timeit(lambda: binary_insertion_sort.bin_insertion_sort(testArr, reverse=True), number=1)}"
+                    print(f"Binary insertion sort (nearly sorted array, descending): {timeTaken}\n")
+                    del testArr
+                    testResults[BIN_INSERTION_SORT + TEST2] = timeTaken
+
+                    testArr = arrTwo.copy()
+                    timeTaken = f"\t\t\t\t\t{timeit.timeit(lambda: binary_insertion_sort.bin_insertion_sort(testArr), number=1)}"
+                    print(f"Binary insertion sort (random array): {timeTaken}")
+                    del testArr
+                    testResults[BIN_INSERTION_SORT + TEST3] = timeTaken
+
+                    testArr = arrTwo.copy()
+                    timeTaken = f"\t\t\t{timeit.timeit(lambda: binary_insertion_sort.bin_insertion_sort(testArr, reverse=True), number=1)}"
+                    print(f"Binary insertion sort (random array, descending): {timeTaken}\n")
+                    del testArr
+                    testResults[BIN_INSERTION_SORT + TEST4] = timeTaken
+                else:
+                    print(f"{F.LIGHTRED_EX}Skipping binary insertion sort as it will take too long to sort...")
 
                 # --------------------------------------------------------------------------------------------
 
