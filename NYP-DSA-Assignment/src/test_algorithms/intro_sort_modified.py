@@ -57,7 +57,7 @@ def intro_sort_process(arr:list[int], start:int, end:int, maxDepth:int, reverse:
     - maxDepth (int): The max recursion depth of the algorithm before using heap sort
     - reverse (bool): True if the list is to be sorted in descending order (Default: False)
     """
-    if (end - start < SIZE_THRESHOLD):
+    if (end - start <= SIZE_THRESHOLD):
         # base case 1
         # use insertion sort to sort the array/sub-array for smaller arrays as it is faster
         return insertion_sort(arr, startIdx=start, endIdx=end+1, reverse=reverse)

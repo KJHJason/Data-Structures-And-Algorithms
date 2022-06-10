@@ -33,7 +33,7 @@ def binary_search(arr:list[int], start:int, end:int, key:int, reverse:bool=False
 def bin_insertion_sort(arr:list[int], reverse:bool=False, startIdx:int=None, endIdx:int=None) -> None:
     """
     Do a insertion sort by integer.
-    However, this function is used in the program to sort by cost per pax and package name
+    However, this function is used in the program to sort by integer
     
     Requires 5 arguments:
     - arr (list): The array of elements to sort by package cost per pax
