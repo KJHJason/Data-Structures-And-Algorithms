@@ -1,13 +1,17 @@
+"""
+Modified introsort using binary insertion sort
+"""
+
 # import standard libraries
 from math import floor, log2
 
 # import local python files
 if (__package__ is None or __package__ == ''):
-    from insertion_sort import insertion_sort
+    from binary_insertion_sort import bin_insertion_sort
     from heap_sort import heap_sort
     from quicksorts import median_of_3, partition_to_2 as partition
 else:
-    from .insertion_sort import insertion_sort
+    from .binary_insertion_sort import bin_insertion_sort
     from .heap_sort import heap_sort
     from .quicksorts import median_of_3, partition_to_2 as partition
 
@@ -16,7 +20,7 @@ SIZE_THRESHOLD = 16 # if less than 16 elements, introsort will use insertion sor
                     # I used the integer 16 as the threshold because GNU Standard C++ library also uses it;
                     # https://gcc.gnu.org/onlinedocs/gcc-12.1.0/libstdc++/api/a00650_source.html#l01838
 
-def intro_sort(arr:list[int], reverse:bool=False) -> None:
+def modified_intro_sort(arr:list[int], reverse:bool=False) -> None:
     """
     Introsort or introspective sort is a hybrid sorting algorithm that consists of quick sort, 
     heap sort, and insertion sort.
@@ -116,7 +120,7 @@ def intro_sort_process(arr:list[int], start:int, end:int, maxDepth:int, reverse:
 
     # base case 2
     # use insertion sort to sort the array/sub-array for smaller arrays as it is faster
-    return insertion_sort(arr, startIdx=start, endIdx=end, reverse=reverse)
+    return bin_insertion_sort(arr, startIdx=start, endIdx=end, reverse=reverse)
 
 # test codes below
 if (__name__ == "__main__"):

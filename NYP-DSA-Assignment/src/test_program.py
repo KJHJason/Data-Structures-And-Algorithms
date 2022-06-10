@@ -15,8 +15,8 @@ sys.setrecursionlimit(1500) # if the program stops unexpectedly, lower the recur
 # import local python files
 from functions import get_input, S_reset
 from test_algorithms import merge_sort, quicksorts, bubble_sort, \
-                            heap_sort, insertion_sort, intro_sort, intro_sort_modified, radix_sort,\
-                            counting_sort, selection_sort, shellsort, tree_sort, binary_insertion_sort
+                            heap_sort, insertion_sort, intro_sort, intro_sort_modified_1, radix_sort,\
+                            counting_sort, selection_sort, shellsort, tree_sort, binary_insertion_sort, intro_sort_modified_2
 
 SORTING_MENU = """
 -------- Sorting Algorithms Test Menu --------
@@ -44,7 +44,8 @@ MERGE_SORT = "Merge sort"
 QUICK_SORT = "Quick sort"
 THREE_WAY_QUICKSORT = "3-way quick sort"
 INTRO_SORT = "Introsort"
-MODIFIED_INTRO_SORT = "Modified Introsort"
+MODIFIED_INTRO_SORT_1 = "Modified Introsort 1"
+MODIFIED_INTRO_SORT_2 = "Modified Introsort 2"
 COUNTING_SORT = "Counting sort"
 RADIX_SORT = "Radix sort"
 PYTHON_SORT = "Python's Timsort in C"
@@ -71,20 +72,15 @@ def get_nearly_sorted_array(n:int) -> list[int]:
     # (using not keyword to negate the boolean as if it is 0, it will be multiplied by 2)
     return [(1, 2)[not random.randint(0, (n - 1)//2)] * i for i in range(1, n + 1)]
 
-def check_if_sorted(arr:list[int], reverse:bool=False) -> str:
+def check_if_sorted(arr:list[int], reverse:bool=False, modelArr:list[int]=[]) -> str:
     """
     Check if the array is sorted and returns a '✗' or '✓' depending on the result.
     """
     verdict = ""
-    for i in range(0, len(arr)-1):
-        if (reverse):
-            if (arr[i] < arr[i+1]):
-                verdict = WRONG
-                break
-        else:
-            if (arr[i] > arr[i+1]):
-                verdict = WRONG
-                break
+    for i in range(0, len(arr)):
+        if (arr[i] != modelArr[i]):
+            verdict = WRONG
+            break
 
     if (verdict == ""):
         verdict = CORRECT
@@ -163,7 +159,11 @@ def main() -> None:
             arrayLen = get_arr_length()
             if (arrayLen != "f"):
                 arrOne = get_nearly_sorted_array(arrayLen)
+                arrOneModelAsc = sorted(arrOne)
+                arrOneModelDesc = sorted(arrOne, reverse=True)
                 arrTwo = [random.randint(0, RANDOMNESS) for _ in range(arrayLen)]
+                arrTwoModelAsc = sorted(arrTwo)
+                arrTwoModelDesc = sorted(arrTwo, reverse=True)
                 random.shuffle(arrTwo)
                 print(f"\n{F.LIGHTYELLOW_EX}Testing correctness of sorting algorithms...")
                 S_reset(nl=True)
@@ -178,28 +178,28 @@ def main() -> None:
 
                     testArr = arrOne.copy()
                     bubble_sort.bubble_sort(testArr)
-                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                     print(f"Bubble sort (nearly sorted array): {verdict}")
                     testHistory[BUBBLE_SORT + TEST1] = verdict
                     del testArr
 
                     testArr = arrOne.copy()
                     bubble_sort.bubble_sort(testArr, reverse=True)
-                    verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                    verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
                     print(f"Bubble sort (nearly sorted array, descending): {verdict}\n")
                     testHistory[BUBBLE_SORT + TEST2] = verdict
                     del testArr
 
                     testArr = arrTwo.copy()
                     bubble_sort.bubble_sort(testArr)
-                    verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr)}"
+                    verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                     print(f"Bubble sort (random array): {verdict}")
                     testHistory[BUBBLE_SORT + TEST3] = verdict
                     del testArr
 
                     testArr = arrTwo.copy()
                     bubble_sort.bubble_sort(testArr, reverse=True)
-                    verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                    verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                     print(f"Bubble sort (random array, descending): {verdict}\n")
                     testHistory[BUBBLE_SORT + TEST4] = verdict
                     del testArr
@@ -211,28 +211,28 @@ def main() -> None:
 
                     testArr = arrOne.copy()
                     selection_sort.selection_sort(testArr)
-                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                     print(f"Selection sort (nearly sorted array): {verdict}")
                     testHistory[SELECTION_SORT + TEST1] = verdict
                     del testArr
 
                     testArr = arrOne.copy()
                     selection_sort.selection_sort(testArr, reverse=True)
-                    verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                    verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
                     print(f"Selection sort (nearly sorted array, descending): {verdict}\n")
                     testHistory[SELECTION_SORT + TEST2] = verdict
                     del testArr
                     
                     testArr = arrTwo.copy()
                     selection_sort.selection_sort(testArr)
-                    verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr)}"
+                    verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                     print(f"Selection sort (random array): {verdict}")
                     testHistory[SELECTION_SORT + TEST3] = verdict
                     del testArr
 
                     testArr = arrTwo.copy()
                     selection_sort.selection_sort(testArr, reverse=True)
-                    verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                    verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                     print(f"Selection sort (random array, descending): {verdict}\n")
                     testHistory[SELECTION_SORT + TEST4] = verdict
                     del testArr
@@ -244,28 +244,28 @@ def main() -> None:
 
                     testArr = arrOne.copy()
                     insertion_sort.insertion_sort(testArr)
-                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                     print(f"Insertion sort (nearly sorted array): {verdict}")
                     testHistory[INSERTION_SORT + TEST1] = verdict
                     del testArr
 
                     testArr = arrOne.copy()
                     insertion_sort.insertion_sort(testArr, reverse=True)
-                    verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                    verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
                     print(f"Insertion sort (nearly sorted array, descending): {verdict}\n")
                     testHistory[INSERTION_SORT + TEST2] = verdict
                     del testArr
                     
                     testArr = arrTwo.copy()
                     insertion_sort.insertion_sort(testArr)
-                    verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr)}"
+                    verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                     print(f"Insertion sort (random array): {verdict}")
                     testHistory[INSERTION_SORT + TEST3] = verdict
                     del testArr
 
                     testArr = arrTwo.copy()
                     insertion_sort.insertion_sort(testArr, reverse=True)
-                    verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                    verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                     print(f"Insertion sort (random array, descending): {verdict}\n")
                     testHistory[INSERTION_SORT + TEST4] = verdict
                     del testArr
@@ -284,33 +284,34 @@ def main() -> None:
 
                     testArr = arrOne.copy()
                     binary_insertion_sort.bin_insertion_sort(testArr)
-                    verdict = f"\t\t\t\t{check_if_sorted(testArr)}"
+                    verdict = f"\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                     print(f"Binary insertion sort (nearly sorted array): {verdict}")
                     testHistory[BIN_INSERTION_SORT + TEST1] = verdict
                     del testArr
 
                     testArr = arrOne.copy()
                     binary_insertion_sort.bin_insertion_sort(testArr, reverse=True)
-                    verdict = f"\t\t{check_if_sorted(testArr, reverse=True)}"
+                    verdict = f"\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
                     print(f"Binary insertion sort (nearly sorted array, descending): {verdict}\n")
                     testHistory[BIN_INSERTION_SORT + TEST2] = verdict
                     del testArr
                     
                     testArr = arrTwo.copy()
                     binary_insertion_sort.bin_insertion_sort(testArr)
-                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                     print(f"Binary insertion sort (random array): {verdict}")
                     testHistory[BIN_INSERTION_SORT + TEST3] = verdict
                     del testArr
 
                     testArr = arrTwo.copy()
                     binary_insertion_sort.bin_insertion_sort(testArr, reverse=True)
-                    verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                    verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                     print(f"Binary insertion sort (random array, descending): {verdict}\n")
                     testHistory[BIN_INSERTION_SORT + TEST4] = verdict
                     del testArr
                 else:
                     print(f"{F.LIGHTRED_EX}Skipping binary insertion sort as it will take too long to sort...")
+                    S_reset(nl=True)
 
                 # --------------------------------------------------------------------------------------------
 
@@ -319,28 +320,28 @@ def main() -> None:
 
                 testArr = arrOne.copy()
                 shellsort.shellsort(testArr)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                 print(f"Shell sort (nearly sorted array): {verdict}")
                 testHistory[SHELL_SORT + TEST1] = verdict
                 del testArr
 
                 testArr = arrOne.copy()
                 shellsort.shellsort(testArr, reverse=True)
-                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
                 print(f"Shell sort (nearly sorted array, descending): {verdict}\n")
                 testHistory[SHELL_SORT + TEST2] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 shellsort.shellsort(testArr)
-                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                 print(f"Shell sort (random array): {verdict}")
                 testHistory[SHELL_SORT + TEST3] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 shellsort.shellsort(testArr, reverse=True)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                 print(f"Shell sort (random array, descending): {verdict}\n")
                 testHistory[SHELL_SORT + TEST4] = verdict
                 del testArr
@@ -352,28 +353,28 @@ def main() -> None:
 
                 testArr = arrOne.copy()
                 heap_sort.heap_sort(testArr)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                 print(f"Heap sort (nearly sorted array): {verdict}")
                 testHistory[HEAP_SORT + TEST1] = verdict
                 del testArr
 
                 testArr = arrOne.copy()
                 heap_sort.heap_sort(testArr, reverse=True)
-                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
                 print(f"Heap sort (nearly sorted array, descending): {verdict}\n")
                 testHistory[HEAP_SORT + TEST2] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 heap_sort.heap_sort(testArr)
-                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                 print(f"Heap sort (random array): {verdict}")
                 testHistory[HEAP_SORT + TEST3] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 heap_sort.heap_sort(testArr, reverse=True)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                 print(f"Heap sort (random array, descending): {verdict}\n")
                 testHistory[HEAP_SORT + TEST4] = verdict
                 del testArr
@@ -386,7 +387,7 @@ def main() -> None:
                 testArr = arrOne.copy()
                 tree = tree_sort.AVLTree()
                 tree.insert_array(testArr)
-                verdict = f"\t\t\t\t\t{check_if_sorted(tree.tree_sort())}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(tree.tree_sort(), modelArr=arrOneModelAsc)}"
                 print(f"AVL Tree sort (nearly sorted array): {verdict}")
                 testHistory[AVL_TREE_SORT + TEST1] = verdict
                 del testArr
@@ -394,7 +395,7 @@ def main() -> None:
                 testArr = arrOne.copy()
                 tree = tree_sort.AVLTree()
                 tree.insert_array(testArr)
-                verdict = f"\t\t\t{check_if_sorted(tree.tree_sort(reverse=True), reverse=True)}"
+                verdict = f"\t\t\t{check_if_sorted(tree.tree_sort(reverse=True), reverse=True, modelArr=arrOneModelDesc)}"
                 print(f"AVL Tree sort (nearly sorted array, descending): {verdict}\n")
                 testHistory[AVL_TREE_SORT + TEST2] = verdict
                 del testArr
@@ -402,7 +403,7 @@ def main() -> None:
                 testArr = arrTwo.copy()
                 tree = tree_sort.AVLTree()
                 tree.insert_array(testArr)
-                verdict = f"\t\t\t\t\t\t{check_if_sorted(tree.tree_sort())}"
+                verdict = f"\t\t\t\t\t\t{check_if_sorted(tree.tree_sort(), modelArr=arrTwoModelAsc)}"
                 print(f"AVL Tree sort (random array): {verdict}")
                 testHistory[AVL_TREE_SORT + TEST3] = verdict
                 del testArr
@@ -410,7 +411,7 @@ def main() -> None:
                 testArr = arrTwo.copy()
                 tree = tree_sort.AVLTree()
                 tree.insert_array(testArr)
-                verdict = f"\t\t\t\t{check_if_sorted(tree.tree_sort(reverse=True), reverse=True)}"
+                verdict = f"\t\t\t\t{check_if_sorted(tree.tree_sort(reverse=True), reverse=True, modelArr=arrTwoModelDesc)}"
                 print(f"AVL Tree sort (random array, descending): {verdict}\n")
                 testHistory[AVL_TREE_SORT + TEST4] = verdict
                 del testArr
@@ -422,28 +423,28 @@ def main() -> None:
 
                 testArr = arrOne.copy()
                 merge_sort.merge_sort(testArr)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                 print(f"Merge sort (nearly sorted array): {verdict}")
                 testHistory[MERGE_SORT + TEST1] = verdict
                 del testArr
 
                 testArr = arrOne.copy()
                 merge_sort.merge_sort(testArr, reverse=True)
-                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
                 print(f"Merge sort (nearly sorted array, descending): {verdict}\n")
                 testHistory[MERGE_SORT + TEST2] = verdict
                 del testArr
                 
                 testArr = arrTwo.copy()
                 merge_sort.merge_sort(testArr)
-                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                 print(f"Merge sort (random array): {verdict}")
                 testHistory[MERGE_SORT + TEST3] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 merge_sort.merge_sort(testArr, reverse=True)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                 print(f"Merge sort (random array, descending): {verdict}\n")
                 testHistory[MERGE_SORT + TEST4] = verdict
                 del testArr
@@ -457,7 +458,7 @@ def main() -> None:
                 try:
                     testArr = arrOne.copy()
                     quicksorts.quicksort(testArr)
-                    verdict += check_if_sorted(testArr)
+                    verdict += check_if_sorted(testArr, modelArr=arrOneModelAsc)
                     print(f"Quick sort (nearly sorted array): {verdict}")
                     testHistory[QUICK_SORT + TEST1] = verdict
                     del testArr
@@ -470,7 +471,7 @@ def main() -> None:
                 try:
                     testArr = arrOne.copy()
                     quicksorts.quicksort(testArr, reverse=True)
-                    verdict += check_if_sorted(testArr, reverse=True)
+                    verdict += check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)
                     print(f"Quick sort (nearly sorted array, descending): {verdict}\n")
                     testHistory[QUICK_SORT + TEST2] = verdict
                     del testArr
@@ -483,7 +484,7 @@ def main() -> None:
                 try:
                     testArr = arrTwo.copy()
                     quicksorts.quicksort(testArr)
-                    verdict += check_if_sorted(testArr)
+                    verdict += check_if_sorted(testArr, modelArr=arrTwoModelAsc)
                     print(f"Quick sort (random array): {verdict}")
                     testHistory[QUICK_SORT + TEST3] = verdict
                     del testArr
@@ -496,7 +497,7 @@ def main() -> None:
                 try:
                     testArr = arrTwo.copy()
                     quicksorts.quicksort(testArr, reverse=True)
-                    verdict += check_if_sorted(testArr, reverse=True)
+                    verdict += check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)
                     print(f"Quick sort (random array, descending): {verdict}\n")
                     testHistory[QUICK_SORT + TEST4] = verdict
                     del testArr
@@ -514,7 +515,7 @@ def main() -> None:
                 try:
                     testArr = arrOne.copy()
                     quicksorts.three_way_quicksort(testArr)
-                    verdict += check_if_sorted(testArr)
+                    verdict += check_if_sorted(testArr, modelArr=arrOneModelAsc)
                     print(f"3-way Quick sort (nearly sorted array): {verdict}")
                     testHistory[THREE_WAY_QUICKSORT + TEST1] = verdict
                     del testArr
@@ -527,7 +528,7 @@ def main() -> None:
                 try:
                     testArr = arrOne.copy()
                     quicksorts.three_way_quicksort(testArr, reverse=True)
-                    verdict += check_if_sorted(testArr, reverse=True)
+                    verdict += check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)
                     print(f"3-way Quick sort (nearly sorted array, descending): {verdict}\n")
                     testHistory[THREE_WAY_QUICKSORT + TEST2] = verdict
                     del testArr
@@ -540,7 +541,7 @@ def main() -> None:
                 try:
                     testArr = arrTwo.copy()
                     quicksorts.three_way_quicksort(testArr)
-                    verdict += check_if_sorted(testArr)
+                    verdict += check_if_sorted(testArr, modelArr=arrTwoModelAsc)
                     print(f"3-way Quick sort (random array): {verdict}")
                     testHistory[THREE_WAY_QUICKSORT + TEST3] = verdict
                     del testArr
@@ -553,7 +554,7 @@ def main() -> None:
                 try:
                     testArr = arrTwo.copy()
                     quicksorts.three_way_quicksort(testArr, reverse=True)
-                    verdict += check_if_sorted(testArr, reverse=True)
+                    verdict += check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)
                     print(f"3-way Quick sort (random array, descending): {verdict}\n")
                     testHistory[THREE_WAY_QUICKSORT + TEST4] = verdict
                     del testArr
@@ -569,30 +570,63 @@ def main() -> None:
 
                 testArr = arrOne.copy()
                 intro_sort.intro_sort(testArr)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                 print(f"Introsort (nearly sorted array): {verdict}")
                 testHistory[INTRO_SORT + TEST1] = verdict
                 del testArr
 
                 testArr = arrOne.copy()
                 intro_sort.intro_sort(testArr, reverse=True)
-                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
                 print(f"Introsort (nearly sorted array, descending): {verdict}\n")
                 testHistory[INTRO_SORT + TEST2] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 intro_sort.intro_sort(testArr)
-                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                 print(f"Introsort (random array): {verdict}")
                 testHistory[INTRO_SORT + TEST3] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 intro_sort.intro_sort(testArr, reverse=True)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                 print(f"Introsort (random array, descending): {verdict}\n")
                 testHistory[INTRO_SORT + TEST4] = verdict
+                del testArr
+
+                # --------------------------------------------------------------------------------------------
+
+                print(f"{F.LIGHTYELLOW_EX}Testing introsort (modified using binary insertion)...")
+                S_reset()
+
+                testArr = arrOne.copy()
+                intro_sort_modified_2.modified_intro_sort(testArr)
+                verdict = f"\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
+                print(f"Modified Introsort (nearly sorted array): {verdict}")
+                testHistory[MODIFIED_INTRO_SORT_2 + TEST1] = verdict
+                del testArr
+
+                testArr = arrOne.copy()
+                intro_sort_modified_2.modified_intro_sort(testArr, reverse=True)
+                verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
+                print(f"Modified Introsort (nearly sorted array, descending): {verdict}\n")
+                testHistory[MODIFIED_INTRO_SORT_2 + TEST2] = verdict
+                del testArr
+
+                testArr = arrTwo.copy()
+                intro_sort_modified_2.modified_intro_sort(testArr)
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
+                print(f"Modified Introsort (random array): {verdict}")
+                testHistory[MODIFIED_INTRO_SORT_2 + TEST3] = verdict
+                del testArr
+
+                testArr = arrTwo.copy()
+                intro_sort_modified_2.modified_intro_sort(testArr, reverse=True)
+                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
+                print(f"Modified Introsort (random array, descending): {verdict}\n")
+                testHistory[MODIFIED_INTRO_SORT_2 + TEST4] = verdict
                 del testArr
 
                 # --------------------------------------------------------------------------------------------
@@ -601,31 +635,31 @@ def main() -> None:
                 S_reset()
 
                 testArr = arrOne.copy()
-                intro_sort_modified.modified_intro_sort(testArr)
-                verdict = f"\t\t\t\t{check_if_sorted(testArr)}"
+                intro_sort_modified_1.modified_intro_sort(testArr)
+                verdict = f"\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                 print(f"Modified Introsort (nearly sorted array): {verdict}")
-                testHistory[MODIFIED_INTRO_SORT + TEST1] = verdict
+                testHistory[MODIFIED_INTRO_SORT_1 + TEST1] = verdict
                 del testArr
 
                 testArr = arrOne.copy()
-                intro_sort_modified.modified_intro_sort(testArr, reverse=True)
-                verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True)}"
-                print(f"Modified  Introsort (nearly sorted array, descending): {verdict}\n")
-                testHistory[MODIFIED_INTRO_SORT + TEST2] = verdict
+                intro_sort_modified_1.modified_intro_sort(testArr, reverse=True)
+                verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
+                print(f"Modified Introsort (nearly sorted array, descending): {verdict}\n")
+                testHistory[MODIFIED_INTRO_SORT_1 + TEST2] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
-                intro_sort_modified.modified_intro_sort(testArr)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                intro_sort_modified_1.modified_intro_sort(testArr)
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                 print(f"Modified Introsort (random array): {verdict}")
-                testHistory[MODIFIED_INTRO_SORT + TEST3] = verdict
+                testHistory[MODIFIED_INTRO_SORT_1 + TEST3] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
-                intro_sort_modified.modified_intro_sort(testArr, reverse=True)
-                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                intro_sort_modified_1.modified_intro_sort(testArr, reverse=True)
+                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                 print(f"Modified Introsort (random array, descending): {verdict}\n")
-                testHistory[MODIFIED_INTRO_SORT + TEST4] = verdict
+                testHistory[MODIFIED_INTRO_SORT_1 + TEST4] = verdict
                 del testArr
 
                 # --------------------------------------------------------------------------------------------
@@ -635,28 +669,28 @@ def main() -> None:
 
                 testArr = arrOne.copy()
                 counting_sort.counting_sort(testArr)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                 print(f"Counting sort (nearly sorted array): {verdict}")
                 testHistory[COUNTING_SORT + TEST1] = verdict
                 del testArr
 
                 testArr = arrOne.copy()
                 counting_sort.counting_sort(testArr, reverse=True)
-                verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
                 print(f"Counting sort (nearly sorted array, descending): {verdict}\n")
                 testHistory[COUNTING_SORT + TEST2] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 counting_sort.counting_sort(testArr)
-                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                 print(f"Counting sort (random array): {verdict}")
                 testHistory[COUNTING_SORT + TEST3] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 counting_sort.counting_sort(testArr, reverse=True)
-                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                 print(f"Counting sort (random array, descending): {verdict}\n")
                 testHistory[COUNTING_SORT + TEST4] = verdict
                 del testArr
@@ -668,28 +702,28 @@ def main() -> None:
 
                 testArr = arrOne.copy()
                 radix_sort.radix_sort(testArr)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
                 print(f"Radix sort (nearly sorted array): {verdict}")
                 testHistory[RADIX_SORT + TEST1] = verdict
                 del testArr
 
                 testArr = arrOne.copy()
                 radix_sort.radix_sort(testArr, reverse=True)
-                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
                 print(f"Radix sort (nearly sorted array, descending): {verdict}\n")
                 testHistory[RADIX_SORT + TEST2] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 radix_sort.radix_sort(testArr)
-                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr)}"
+                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
                 print(f"Radix sort (random array): {verdict}")
                 testHistory[RADIX_SORT + TEST3] = verdict
                 del testArr
 
                 testArr = arrTwo.copy()
                 radix_sort.radix_sort(testArr, reverse=True)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True)}"
+                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
                 print(f"Radix sort (random array, descending): {verdict}\n")
                 testHistory[RADIX_SORT + TEST4] = verdict
                 del testArr
@@ -698,6 +732,7 @@ def main() -> None:
 
                 print(f"{F.LIGHTGREEN_EX}All tests finished!")
                 S_reset()
+                del arrOneModelDesc, arrOneModelAsc, arrTwoModelDesc, arrTwoModelAsc
 
                 testVerdict = ""
                 recursionError = False
@@ -871,6 +906,7 @@ def main() -> None:
                     testResults[BIN_INSERTION_SORT + TEST4] = timeTaken
                 else:
                     print(f"{F.LIGHTRED_EX}Skipping binary insertion sort as it will take too long to sort...")
+                    S_reset(nl=True)
 
                 # --------------------------------------------------------------------------------------------
 
@@ -1130,32 +1166,61 @@ def main() -> None:
 
                 # --------------------------------------------------------------------------------------------
 
+                print(f"{F.LIGHTYELLOW_EX}Testing introsort (modified using binary insertion)...")
+                S_reset()
+
+                testArr = arrOne.copy()
+                timeTaken = f"\t\t\t\t{timeit.timeit(lambda: intro_sort_modified_2.modified_intro_sort(testArr), number=1)}"
+                print(f"Modified Introsort (nearly sorted array): {timeTaken}")
+                del testArr
+                testResults[MODIFIED_INTRO_SORT_2 + TEST1] = timeTaken
+
+                testArr = arrOne.copy()
+                timeTaken = f"\t\t\t{timeit.timeit(lambda: intro_sort_modified_2.modified_intro_sort(testArr, reverse=True), number=1)}"
+                print(f"Modified Introsort (nearly sorted array, descending): {timeTaken}\n")
+                del testArr
+                testResults[MODIFIED_INTRO_SORT_2 + TEST2] = timeTaken
+
+                testArr = arrTwo.copy()
+                timeTaken = f"\t\t\t\t\t{timeit.timeit(lambda: intro_sort_modified_2.modified_intro_sort(testArr), number=1)}"
+                print(f"Modified Introsort (random array): {timeTaken}")
+                del testArr
+                testResults[MODIFIED_INTRO_SORT_2 + TEST3] = timeTaken
+
+                testArr = arrTwo.copy()
+                timeTaken = f"\t\t\t\t{timeit.timeit(lambda: intro_sort_modified_2.modified_intro_sort(testArr, reverse=True), number=1)}"
+                print(f"Modified Introsort (random array, descending): {timeTaken}\n")
+                del testArr
+                testResults[MODIFIED_INTRO_SORT_2 + TEST4] = timeTaken
+
+                # --------------------------------------------------------------------------------------------
+
                 print(f"{F.LIGHTYELLOW_EX}Testing introsort (modified using 3way quicksort)...")
                 S_reset()
 
                 testArr = arrOne.copy()
-                timeTaken = f"\t\t\t\t{timeit.timeit(lambda: intro_sort_modified.modified_intro_sort(testArr), number=1)}"
+                timeTaken = f"\t\t\t\t{timeit.timeit(lambda: intro_sort_modified_1.modified_intro_sort(testArr), number=1)}"
                 print(f"Modified Introsort (nearly sorted array): {timeTaken}")
                 del testArr
-                testResults[MODIFIED_INTRO_SORT + TEST1] = timeTaken
+                testResults[MODIFIED_INTRO_SORT_1 + TEST1] = timeTaken
 
                 testArr = arrOne.copy()
-                timeTaken = f"\t\t\t{timeit.timeit(lambda: intro_sort_modified.modified_intro_sort(testArr, reverse=True), number=1)}"
+                timeTaken = f"\t\t\t{timeit.timeit(lambda: intro_sort_modified_1.modified_intro_sort(testArr, reverse=True), number=1)}"
                 print(f"Modified Introsort (nearly sorted array, descending): {timeTaken}\n")
                 del testArr
-                testResults[MODIFIED_INTRO_SORT + TEST2] = timeTaken
+                testResults[MODIFIED_INTRO_SORT_1 + TEST2] = timeTaken
 
                 testArr = arrTwo.copy()
-                timeTaken = f"\t\t\t\t\t{timeit.timeit(lambda: intro_sort_modified.modified_intro_sort(testArr), number=1)}"
+                timeTaken = f"\t\t\t\t\t{timeit.timeit(lambda: intro_sort_modified_1.modified_intro_sort(testArr), number=1)}"
                 print(f"Modified Introsort (random array): {timeTaken}")
                 del testArr
-                testResults[MODIFIED_INTRO_SORT + TEST3] = timeTaken
+                testResults[MODIFIED_INTRO_SORT_1 + TEST3] = timeTaken
 
                 testArr = arrTwo.copy()
-                timeTaken = f"\t\t\t\t{timeit.timeit(lambda: intro_sort_modified.modified_intro_sort(testArr, reverse=True), number=1)}"
+                timeTaken = f"\t\t\t\t{timeit.timeit(lambda: intro_sort_modified_1.modified_intro_sort(testArr, reverse=True), number=1)}"
                 print(f"Modified Introsort (random array, descending): {timeTaken}\n")
                 del testArr
-                testResults[MODIFIED_INTRO_SORT + TEST4] = timeTaken
+                testResults[MODIFIED_INTRO_SORT_1 + TEST4] = timeTaken
 
                 # --------------------------------------------------------------------------------------------
 

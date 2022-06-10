@@ -1,3 +1,7 @@
+"""
+Modified introsort using 3way quicksort
+"""
+
 # import standard libraries
 from math import floor, log2
 
