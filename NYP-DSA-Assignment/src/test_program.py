@@ -69,7 +69,7 @@ RECURSION_ERROR = "Recursion error: maximum recursion depth exceeded"
 def get_nearly_sorted_array(n:int) -> list[int]:
     # 1 in n//2 chance of multiplying by 2 
     # (using not keyword to negate the boolean as if it is 0, it will be multiplied by 2)
-    return [(1, 2)[not random.randint(0, (n -1)//2)] * i for i in range(n)]
+    return [(1, 2)[not random.randint(0, (n - 1)//2)] * i for i in range(1, n)]
 
 def check_if_sorted(arr:list[int], reverse:bool=False) -> str:
     """
