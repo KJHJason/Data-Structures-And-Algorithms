@@ -136,4 +136,3 @@ def heap_sort(arr:list[int], reverse:bool=False) -> None:
 
         # call heapify on the reduced heap
         heapify(arr, i, 0, reverse=reverse) 
-

@@ -90,9 +90,6 @@ def intro_sort_process(arr:list[int], start:int, end:int, maxDepth:int, reverse:
             arrCopy = arr[start:end+1]
             heap_sort(arrCopy, reverse=reverse)
             arr[start:end+1] = arrCopy
-
-            # explicitly delete the copy of the array for garbage collector to free up memory
-            del arrCopy
             return
 
         maxDepth -= 1
