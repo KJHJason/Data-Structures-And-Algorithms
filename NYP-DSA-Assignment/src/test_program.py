@@ -5,6 +5,7 @@ to demonstrate how fast they are.
 """
 
 # import third party libraries
+from tkinter.filedialog import test
 from colorama import Fore as F, init as coloramaInit
 
 # import standard libraries
@@ -31,6 +32,8 @@ NUM_REGEX = re.compile(r"^\d+$")
 RANDOMNESS = 999999 # randint(0, RANDOMNESS) for generating an array of random numbers between 0 to RANDOMNESS
 BASIC_SORT_LIMIT = 10000 # maximum number of elements in the array before testing bubble, selection, and insertion sort as they can take a long time
 BIN_INSERTION_SORT_LIMIT = 100000
+ALGO_LIMIT = 1000000 # for algorithms that are fast O(nlogn) but becomes noticeably slower 
+                     # when n gets too large. Will prompt user to confirm if they want to run the test.
 
 # logging keys for each sorting algorithms
 BUBBLE_SORT = "Bubble sort"
@@ -66,6 +69,7 @@ SORT_TIME_LOG = "sorting_time"
 CORRECT = "✓"
 WRONG = "✗"
 RECURSION_ERROR = "Recursion error: maximum recursion depth exceeded"
+SKIP = "Skipped"
 
 def get_nearly_sorted_array(n:int) -> list[int]:
     # 1 in n//2 chance of multiplying by 2 
@@ -140,6 +144,21 @@ def log_results(origFileName:str, results:dict[str: Union[float, str]], *args) -
 
     print(f"{F.LIGHTGREEN_EX}Results logged as {fileName}")
     S_reset()
+
+def cont_sort_prompt(n:int, prints:Union[str, tuple]="") -> str:
+    """
+    Prompts the user to confirm if they want to run the test.
+    
+    Args:
+        n: the length of the array to test
+        prints: the text to print before the prompt
+    """
+    continueSort = "y"
+    if (n >= ALGO_LIMIT):
+        continueSort = get_input(prompt="Continue sorting? (y/n): ", prints=prints, command=("y", "n"))
+
+    return True if (continueSort == "y") \
+                else False
 
 def main() -> None:
     """
@@ -315,36 +334,42 @@ def main() -> None:
 
                 # --------------------------------------------------------------------------------------------
 
-                print(f"{F.LIGHTYELLOW_EX}Testing shell sort (halving interval)...")
-                S_reset()
+                continueSort = cont_sort_prompt(n=arrayLen, prints="Shell sort will take quite a while...")
+                
+                if (continueSort):
+                    print(f"{F.LIGHTYELLOW_EX}Testing shell sort (halving interval)...")
+                    S_reset()
 
-                testArr = arrOne.copy()
-                shellsort.shellsort(testArr)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
-                print(f"Shell sort (nearly sorted array): {verdict}")
-                testHistory[SHELL_SORT + TEST1] = verdict
-                del testArr
+                    testArr = arrOne.copy()
+                    shellsort.shellsort(testArr)
+                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrOneModelAsc)}"
+                    print(f"Shell sort (nearly sorted array): {verdict}")
+                    testHistory[SHELL_SORT + TEST1] = verdict
+                    del testArr
 
-                testArr = arrOne.copy()
-                shellsort.shellsort(testArr, reverse=True)
-                verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
-                print(f"Shell sort (nearly sorted array, descending): {verdict}\n")
-                testHistory[SHELL_SORT + TEST2] = verdict
-                del testArr
+                    testArr = arrOne.copy()
+                    shellsort.shellsort(testArr, reverse=True)
+                    verdict = f"\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)}"
+                    print(f"Shell sort (nearly sorted array, descending): {verdict}\n")
+                    testHistory[SHELL_SORT + TEST2] = verdict
+                    del testArr
 
-                testArr = arrTwo.copy()
-                shellsort.shellsort(testArr)
-                verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
-                print(f"Shell sort (random array): {verdict}")
-                testHistory[SHELL_SORT + TEST3] = verdict
-                del testArr
+                    testArr = arrTwo.copy()
+                    shellsort.shellsort(testArr)
+                    verdict = f"\t\t\t\t\t\t{check_if_sorted(testArr, modelArr=arrTwoModelAsc)}"
+                    print(f"Shell sort (random array): {verdict}")
+                    testHistory[SHELL_SORT + TEST3] = verdict
+                    del testArr
 
-                testArr = arrTwo.copy()
-                shellsort.shellsort(testArr, reverse=True)
-                verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
-                print(f"Shell sort (random array, descending): {verdict}\n")
-                testHistory[SHELL_SORT + TEST4] = verdict
-                del testArr
+                    testArr = arrTwo.copy()
+                    shellsort.shellsort(testArr, reverse=True)
+                    verdict = f"\t\t\t\t\t{check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)}"
+                    print(f"Shell sort (random array, descending): {verdict}\n")
+                    testHistory[SHELL_SORT + TEST4] = verdict
+                    del testArr
+                else:
+                    print(f"{F.LIGHTRED_EX}Skipping shell sort...")
+                    S_reset(nl=True)
 
                 # --------------------------------------------------------------------------------------------
 
@@ -381,40 +406,45 @@ def main() -> None:
 
                 # --------------------------------------------------------------------------------------------
 
-                print(f"{F.LIGHTYELLOW_EX}Testing (AVL) tree sort...")
-                S_reset()
+                continueSort = cont_sort_prompt(n=arrayLen, prints="(AVL) Tree sort will take quite a while...")
+                if (continueSort):
+                    print(f"{F.LIGHTYELLOW_EX}Testing (AVL) tree sort...")
+                    S_reset()
 
-                testArr = arrOne.copy()
-                tree = tree_sort.AVLTree()
-                tree.insert_array(testArr)
-                verdict = f"\t\t\t\t\t{check_if_sorted(tree.tree_sort(), modelArr=arrOneModelAsc)}"
-                print(f"AVL Tree sort (nearly sorted array): {verdict}")
-                testHistory[AVL_TREE_SORT + TEST1] = verdict
-                del testArr
+                    testArr = arrOne.copy()
+                    tree = tree_sort.AVLTree()
+                    tree.insert_array(testArr)
+                    verdict = f"\t\t\t\t\t{check_if_sorted(tree.tree_sort(), modelArr=arrOneModelAsc)}"
+                    print(f"AVL Tree sort (nearly sorted array): {verdict}")
+                    testHistory[AVL_TREE_SORT + TEST1] = verdict
+                    del testArr
 
-                testArr = arrOne.copy()
-                tree = tree_sort.AVLTree()
-                tree.insert_array(testArr)
-                verdict = f"\t\t\t{check_if_sorted(tree.tree_sort(reverse=True), reverse=True, modelArr=arrOneModelDesc)}"
-                print(f"AVL Tree sort (nearly sorted array, descending): {verdict}\n")
-                testHistory[AVL_TREE_SORT + TEST2] = verdict
-                del testArr
+                    testArr = arrOne.copy()
+                    tree = tree_sort.AVLTree()
+                    tree.insert_array(testArr)
+                    verdict = f"\t\t\t{check_if_sorted(tree.tree_sort(reverse=True), reverse=True, modelArr=arrOneModelDesc)}"
+                    print(f"AVL Tree sort (nearly sorted array, descending): {verdict}\n")
+                    testHistory[AVL_TREE_SORT + TEST2] = verdict
+                    del testArr
 
-                testArr = arrTwo.copy()
-                tree = tree_sort.AVLTree()
-                tree.insert_array(testArr)
-                verdict = f"\t\t\t\t\t\t{check_if_sorted(tree.tree_sort(), modelArr=arrTwoModelAsc)}"
-                print(f"AVL Tree sort (random array): {verdict}")
-                testHistory[AVL_TREE_SORT + TEST3] = verdict
-                del testArr
+                    testArr = arrTwo.copy()
+                    tree = tree_sort.AVLTree()
+                    tree.insert_array(testArr)
+                    verdict = f"\t\t\t\t\t\t{check_if_sorted(tree.tree_sort(), modelArr=arrTwoModelAsc)}"
+                    print(f"AVL Tree sort (random array): {verdict}")
+                    testHistory[AVL_TREE_SORT + TEST3] = verdict
+                    del testArr
 
-                testArr = arrTwo.copy()
-                tree = tree_sort.AVLTree()
-                tree.insert_array(testArr)
-                verdict = f"\t\t\t\t{check_if_sorted(tree.tree_sort(reverse=True), reverse=True, modelArr=arrTwoModelDesc)}"
-                print(f"AVL Tree sort (random array, descending): {verdict}\n")
-                testHistory[AVL_TREE_SORT + TEST4] = verdict
-                del testArr
+                    testArr = arrTwo.copy()
+                    tree = tree_sort.AVLTree()
+                    tree.insert_array(testArr)
+                    verdict = f"\t\t\t\t{check_if_sorted(tree.tree_sort(reverse=True), reverse=True, modelArr=arrTwoModelDesc)}"
+                    print(f"AVL Tree sort (random array, descending): {verdict}\n")
+                    testHistory[AVL_TREE_SORT + TEST4] = verdict
+                    del testArr
+                else:
+                    print(f"{F.LIGHTYELLOW_EX}Skipping (AVL) tree sort...")
+                    S_reset(nl=True)
 
                 # --------------------------------------------------------------------------------------------
 
@@ -508,60 +538,66 @@ def main() -> None:
 
                 # --------------------------------------------------------------------------------------------
 
-                print(f"{F.LIGHTYELLOW_EX}Testing 3-way quick sort...")
-                S_reset()
+                continueSort = cont_sort_prompt(n=arrayLen, prints="3-way quick sort will take quite a while...")
 
-                verdict = "\t\t\t\t"
-                try:
-                    testArr = arrOne.copy()
-                    quicksorts.three_way_quicksort(testArr)
-                    verdict += check_if_sorted(testArr, modelArr=arrOneModelAsc)
-                    print(f"3-way Quick sort (nearly sorted array): {verdict}")
-                    testHistory[THREE_WAY_QUICKSORT + TEST1] = verdict
-                    del testArr
-                except (RecursionError):
-                    print(f"{F.LIGHTRED_EX}3-way Quick sort (nearly sorted array): {verdict}Recursion error!")
+                if (continueSort):
+                    print(f"{F.LIGHTYELLOW_EX}Testing 3-way quick sort...")
                     S_reset()
-                    testHistory[THREE_WAY_QUICKSORT + TEST1] = verdict + RECURSION_ERROR
 
-                verdict = "\t\t\t"
-                try:
-                    testArr = arrOne.copy()
-                    quicksorts.three_way_quicksort(testArr, reverse=True)
-                    verdict += check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)
-                    print(f"3-way Quick sort (nearly sorted array, descending): {verdict}\n")
-                    testHistory[THREE_WAY_QUICKSORT + TEST2] = verdict
-                    del testArr
-                except (RecursionError):
-                    print(f"{F.LIGHTRED_EX}3-way Quick sort (nearly sorted array, descending): {verdict}Recursion error!")
+                    verdict = "\t\t\t\t"
+                    try:
+                        testArr = arrOne.copy()
+                        quicksorts.three_way_quicksort(testArr)
+                        verdict += check_if_sorted(testArr, modelArr=arrOneModelAsc)
+                        print(f"3-way Quick sort (nearly sorted array): {verdict}")
+                        testHistory[THREE_WAY_QUICKSORT + TEST1] = verdict
+                        del testArr
+                    except (RecursionError):
+                        print(f"{F.LIGHTRED_EX}3-way Quick sort (nearly sorted array): {verdict}Recursion error!")
+                        S_reset()
+                        testHistory[THREE_WAY_QUICKSORT + TEST1] = verdict + RECURSION_ERROR
+
+                    verdict = "\t\t\t"
+                    try:
+                        testArr = arrOne.copy()
+                        quicksorts.three_way_quicksort(testArr, reverse=True)
+                        verdict += check_if_sorted(testArr, reverse=True, modelArr=arrOneModelDesc)
+                        print(f"3-way Quick sort (nearly sorted array, descending): {verdict}\n")
+                        testHistory[THREE_WAY_QUICKSORT + TEST2] = verdict
+                        del testArr
+                    except (RecursionError):
+                        print(f"{F.LIGHTRED_EX}3-way Quick sort (nearly sorted array, descending): {verdict}Recursion error!")
+                        S_reset(nl=True)
+                        testHistory[THREE_WAY_QUICKSORT + TEST2] = verdict + RECURSION_ERROR
+
+                    verdict = "\t\t\t\t\t"
+                    try:
+                        testArr = arrTwo.copy()
+                        quicksorts.three_way_quicksort(testArr)
+                        verdict += check_if_sorted(testArr, modelArr=arrTwoModelAsc)
+                        print(f"3-way Quick sort (random array): {verdict}")
+                        testHistory[THREE_WAY_QUICKSORT + TEST3] = verdict
+                        del testArr
+                    except (RecursionError):
+                        print(f"{F.LIGHTRED_EX}3-way Quick sort (random array): {verdict}Recursion error!")
+                        S_reset()
+                        testHistory[THREE_WAY_QUICKSORT + TEST3] = verdict + RECURSION_ERROR
+
+                    verdict = "\t\t\t\t"
+                    try:
+                        testArr = arrTwo.copy()
+                        quicksorts.three_way_quicksort(testArr, reverse=True)
+                        verdict += check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)
+                        print(f"3-way Quick sort (random array, descending): {verdict}\n")
+                        testHistory[THREE_WAY_QUICKSORT + TEST4] = verdict
+                        del testArr
+                    except (RecursionError):
+                        print(f"{F.LIGHTRED_EX}3-way Quick sort (random array, descending): {verdict}Recursion error!")
+                        S_reset(nl=True)
+                        testHistory[THREE_WAY_QUICKSORT + TEST4] = verdict + RECURSION_ERROR
+                else:
+                    print(f"{F.LIGHTYELLOW_EX}Skipping 3-way quick sort tests...")
                     S_reset(nl=True)
-                    testHistory[THREE_WAY_QUICKSORT + TEST2] = verdict + RECURSION_ERROR
-
-                verdict = "\t\t\t\t\t"
-                try:
-                    testArr = arrTwo.copy()
-                    quicksorts.three_way_quicksort(testArr)
-                    verdict += check_if_sorted(testArr, modelArr=arrTwoModelAsc)
-                    print(f"3-way Quick sort (random array): {verdict}")
-                    testHistory[THREE_WAY_QUICKSORT + TEST3] = verdict
-                    del testArr
-                except (RecursionError):
-                    print(f"{F.LIGHTRED_EX}3-way Quick sort (random array): {verdict}Recursion error!")
-                    S_reset()
-                    testHistory[THREE_WAY_QUICKSORT + TEST3] = verdict + RECURSION_ERROR
-
-                verdict = "\t\t\t\t"
-                try:
-                    testArr = arrTwo.copy()
-                    quicksorts.three_way_quicksort(testArr, reverse=True)
-                    verdict += check_if_sorted(testArr, reverse=True, modelArr=arrTwoModelDesc)
-                    print(f"3-way Quick sort (random array, descending): {verdict}\n")
-                    testHistory[THREE_WAY_QUICKSORT + TEST4] = verdict
-                    del testArr
-                except (RecursionError):
-                    print(f"{F.LIGHTRED_EX}3-way Quick sort (random array, descending): {verdict}Recursion error!")
-                    S_reset(nl=True)
-                    testHistory[THREE_WAY_QUICKSORT + TEST4] = verdict + RECURSION_ERROR
 
                 # --------------------------------------------------------------------------------------------
 
@@ -910,32 +946,38 @@ def main() -> None:
 
                 # --------------------------------------------------------------------------------------------
 
-                print(f"{F.LIGHTYELLOW_EX}Testing shell sort (halving interval)...")
-                S_reset()
+                continueSort = cont_sort_prompt(n=arrayLen, prints="Shell sort will take quite a while...")
                 
-                testArr = arrOne.copy()
-                timeTaken = f"\t\t\t\t\t{timeit.timeit(lambda: shellsort.shellsort(testArr), number=1)}"
-                del testArr
-                print(f"Shell sort (nearly sorted array): {timeTaken}")
-                testResults[SHELL_SORT + TEST1] = timeTaken
+                if (continueSort):
+                    print(f"{F.LIGHTYELLOW_EX}Testing shell sort (halving interval)...")
+                    S_reset()
+                    
+                    testArr = arrOne.copy()
+                    timeTaken = f"\t\t\t\t\t{timeit.timeit(lambda: shellsort.shellsort(testArr), number=1)}"
+                    del testArr
+                    print(f"Shell sort (nearly sorted array): {timeTaken}")
+                    testResults[SHELL_SORT + TEST1] = timeTaken
 
-                testArr = arrOne.copy()
-                timeTaken = f"\t\t\t\t{timeit.timeit(lambda: shellsort.shellsort(testArr, reverse=True), number=1)}"
-                print(f"Shell sort (nearly sorted array, descending): {timeTaken}\n")
-                del testArr
-                testResults[SHELL_SORT + TEST2] = timeTaken
-            
-                testArr = arrTwo.copy()
-                timeTaken = f"\t\t\t\t\t\t{timeit.timeit(lambda: shellsort.shellsort(testArr), number=1)}"
-                print(f"Shell sort (random array): {timeTaken}")
-                del testArr
-                testResults[SHELL_SORT + TEST3] = timeTaken
+                    testArr = arrOne.copy()
+                    timeTaken = f"\t\t\t\t{timeit.timeit(lambda: shellsort.shellsort(testArr, reverse=True), number=1)}"
+                    print(f"Shell sort (nearly sorted array, descending): {timeTaken}\n")
+                    del testArr
+                    testResults[SHELL_SORT + TEST2] = timeTaken
+                
+                    testArr = arrTwo.copy()
+                    timeTaken = f"\t\t\t\t\t\t{timeit.timeit(lambda: shellsort.shellsort(testArr), number=1)}"
+                    print(f"Shell sort (random array): {timeTaken}")
+                    del testArr
+                    testResults[SHELL_SORT + TEST3] = timeTaken
 
-                testArr = arrTwo.copy()
-                timeTaken = f"\t\t\t\t\t{timeit.timeit(lambda: shellsort.shellsort(testArr, reverse=True), number=1)}"
-                print(f"Shell sort (random array, descending): {timeTaken}\n")
-                del testArr
-                testResults[SHELL_SORT + TEST4] = timeTaken
+                    testArr = arrTwo.copy()
+                    timeTaken = f"\t\t\t\t\t{timeit.timeit(lambda: shellsort.shellsort(testArr, reverse=True), number=1)}"
+                    print(f"Shell sort (random array, descending): {timeTaken}\n")
+                    del testArr
+                    testResults[SHELL_SORT + TEST4] = timeTaken
+                else:
+                    print(f"{F.LIGHTRED_EX}Skipping shell sort...")
+                    S_reset(nl=True)
 
                 # --------------------------------------------------------------------------------------------
 
@@ -968,37 +1010,63 @@ def main() -> None:
 
                 # --------------------------------------------------------------------------------------------
 
-                print(f"{F.LIGHTYELLOW_EX}Testing (AVL) tree sort...")
-                S_reset()
+                continueSort = cont_sort_prompt(n=arrayLen, prints="3-way quick sort will take quite a while...")
+                
+                if (continueSort):
+                    print(f"{F.LIGHTYELLOW_EX}Testing (AVL) tree sort...")
+                    S_reset()
 
-                def test_tree_sort(arr:list[int], reverse:bool=False) -> None:
-                    tree = tree_sort.AVLTree()
-                    tree.insert_array(arr)
-                    tree.tree_sort(reverse=reverse)
+                    def test_tree_sort(arr:list[int], reverse:bool=False) -> None:
+                        tree = tree_sort.AVLTree()
+                        tree.insert_array(arr)
+                        tree.tree_sort(reverse=reverse)
 
-                testArr = arrOne.copy()
-                timeTaken = f"\t\t\t\t\t{timeit.timeit(lambda: test_tree_sort(testArr), number=1)}"
-                del testArr
-                print(f"AVL tree sort (nearly sorted array): {timeTaken}")
-                testResults[AVL_TREE_SORT + TEST1] = timeTaken
+                    try:
+                        testArr = arrOne.copy()
+                        timeTaken = f"\t\t\t\t\t{timeit.timeit(lambda: test_tree_sort(testArr), number=1)}"
+                        del testArr
+                        print(f"AVL tree sort (nearly sorted array): {timeTaken}")
+                        testResults[AVL_TREE_SORT + TEST1] = timeTaken
+                    except (KeyboardInterrupt):
+                        print(f"{F.LIGHTRED_EX}Skipped AVL tree sort...")
+                        S_reset()
+                        testResults[AVL_TREE_SORT + TEST1] = SKIP
 
-                testArr = arrOne.copy()
-                timeTaken = f"\t\t\t{timeit.timeit(lambda: test_tree_sort(testArr, reverse=True), number=1)}"
-                print(f"AVL tree sort (nearly sorted array, descending): {timeTaken}\n")
-                del testArr
-                testResults[AVL_TREE_SORT + TEST2] = timeTaken
+                    try:
+                        testArr = arrOne.copy()
+                        timeTaken = f"\t\t\t{timeit.timeit(lambda: test_tree_sort(testArr, reverse=True), number=1)}"
+                        print(f"AVL tree sort (nearly sorted array, descending): {timeTaken}\n")
+                        del testArr
+                        testResults[AVL_TREE_SORT + TEST2] = timeTaken
+                    except (KeyboardInterrupt):
+                        print(f"{F.LIGHTRED_EX}Skipped AVL tree sort...")
+                        S_reset(nl=True)
+                        testResults[AVL_TREE_SORT + TEST2] = SKIP
 
-                testArr = arrTwo.copy()
-                timeTaken = f"\t\t\t\t\t\t{timeit.timeit(lambda: test_tree_sort(testArr), number=1)}"
-                print(f"AVL tree sort (random array): {timeTaken}")
-                del testArr
-                testResults[AVL_TREE_SORT + TEST3] = timeTaken
+                    try:
+                        testArr = arrTwo.copy()
+                        timeTaken = f"\t\t\t\t\t\t{timeit.timeit(lambda: test_tree_sort(testArr), number=1)}"
+                        print(f"AVL tree sort (random array): {timeTaken}")
+                        del testArr
+                        testResults[AVL_TREE_SORT + TEST3] = timeTaken
+                    except (KeyboardInterrupt):
+                        print(f"{F.LIGHTRED_EX}Skipped AVL tree sort...")
+                        S_reset()
+                        testResults[AVL_TREE_SORT + TEST3] = SKIP
 
-                testArr = arrTwo.copy()
-                timeTaken = f"\t\t\t\t{timeit.timeit(lambda: test_tree_sort(testArr, reverse=True), number=1)}"
-                print(f"AVL tree sort (random array, descending): {timeTaken}\n")
-                del testArr
-                testResults[AVL_TREE_SORT + TEST4] = timeTaken
+                    try:
+                        testArr = arrTwo.copy()
+                        timeTaken = f"\t\t\t\t{timeit.timeit(lambda: test_tree_sort(testArr, reverse=True), number=1)}"
+                        print(f"AVL tree sort (random array, descending): {timeTaken}\n")
+                        del testArr
+                        testResults[AVL_TREE_SORT + TEST4] = timeTaken
+                    except (KeyboardInterrupt):
+                        print(f"{F.LIGHTRED_EX}Skipped AVL tree sort...")
+                        S_reset(nl=True)
+                        testResults[AVL_TREE_SORT + TEST4] = SKIP
+                else:
+                    print(f"{F.LIGHTRED_EX}Skipped AVL tree sort...")
+                    S_reset(nl=True)
 
                 # --------------------------------------------------------------------------------------------
 
@@ -1084,56 +1152,78 @@ def main() -> None:
 
                 # --------------------------------------------------------------------------------------------
 
-                print(f"{F.LIGHTYELLOW_EX}Testing 3-way quick sort...")
-                S_reset()
+                continueSort = cont_sort_prompt(n=arrayLen, prints="3-way quick sort will take quite a while...")
 
-                testArr = arrOne.copy()
-                timeTaken = "\t\t\t\t"
-                try:
-                    timeTaken += str(timeit.timeit(lambda: quicksorts.three_way_quicksort(testArr), number=1))
-                    del testArr
-                    print(f"3-way quick sort (nearly sorted array): {timeTaken}")
-                    testResults[THREE_WAY_QUICKSORT + TEST1] = timeTaken
-                except (RecursionError):
-                    print(f"{F.LIGHTRED_EX}3-way quick sort (nearly sorted array): {timeTaken}Recursion error!")
+                if (continueSort):
+                    print(f"{F.LIGHTYELLOW_EX}Testing 3-way quick sort...")
                     S_reset()
-                    testResults[THREE_WAY_QUICKSORT + TEST1] = timeTaken + RECURSION_ERROR
 
-                testArr = arrOne.copy()
-                timeTaken = "\t\t\t"
-                try:
-                    timeTaken += str(timeit.timeit(lambda: quicksorts.three_way_quicksort(testArr, reverse=True), number=1))
-                    del testArr
-                    print(f"3-way quick sort (nearly sorted array, descending): {timeTaken}\n")
-                    testResults[THREE_WAY_QUICKSORT + TEST2] = timeTaken
-                except (RecursionError):
-                    print(f"{F.LIGHTRED_EX}3-way quick sort (nearly sorted array, descending): {timeTaken}Recursion error!")
+                    testArr = arrOne.copy()
+                    timeTaken = "\t\t\t\t"
+                    try:
+                        timeTaken += str(timeit.timeit(lambda: quicksorts.three_way_quicksort(testArr), number=1))
+                        del testArr
+                        print(f"3-way quick sort (nearly sorted array): {timeTaken}")
+                        testResults[THREE_WAY_QUICKSORT + TEST1] = timeTaken
+                    except (RecursionError):
+                        print(f"{F.LIGHTRED_EX}3-way quick sort (nearly sorted array): {timeTaken}Recursion error!")
+                        S_reset()
+                        testResults[THREE_WAY_QUICKSORT + TEST1] = timeTaken + RECURSION_ERROR
+                    except (KeyboardInterrupt):
+                        print(f"{F.LIGHTRED_EX}Skipped 3-way quick sort...")
+                        S_reset()
+                        testResults[THREE_WAY_QUICKSORT + TEST1] = SKIP
+
+                    testArr = arrOne.copy()
+                    timeTaken = "\t\t\t"
+                    try:
+                        timeTaken += str(timeit.timeit(lambda: quicksorts.three_way_quicksort(testArr, reverse=True), number=1))
+                        del testArr
+                        print(f"3-way quick sort (nearly sorted array, descending): {timeTaken}\n")
+                        testResults[THREE_WAY_QUICKSORT + TEST2] = timeTaken
+                    except (RecursionError):
+                        print(f"{F.LIGHTRED_EX}3-way quick sort (nearly sorted array, descending): {timeTaken}Recursion error!")
+                        S_reset(nl=True)
+                        testResults[THREE_WAY_QUICKSORT + TEST2] = timeTaken + RECURSION_ERROR
+                    except (KeyboardInterrupt):
+                        print(f"{F.LIGHTRED_EX}Skipped 3-way quick sort...")
+                        S_reset(nl=True)
+                        testResults[THREE_WAY_QUICKSORT + TEST2] = SKIP
+
+                    testArr = arrTwo.copy()
+                    timeTaken = "\t\t\t\t\t"
+                    try:
+                        timeTaken += str(timeit.timeit(lambda: quicksorts.three_way_quicksort(testArr), number=1))
+                        del testArr
+                        print(f"3-way quick sort (random array): {timeTaken}")
+                        testResults[THREE_WAY_QUICKSORT + TEST3] = timeTaken
+                    except (RecursionError):
+                        print(f"{F.LIGHTRED_EX}3-way quick sort (random array): {timeTaken}Recursion error!")
+                        S_reset()
+                        testResults[THREE_WAY_QUICKSORT + TEST3] = timeTaken + RECURSION_ERROR
+                    except (KeyboardInterrupt):
+                        print(f"{F.LIGHTRED_EX}Skipped 3-way quick sort...")
+                        S_reset()
+                        testResults[THREE_WAY_QUICKSORT + TEST3] = SKIP
+
+                    testArr = arrTwo.copy()
+                    timeTaken = "\t\t\t\t"
+                    try:
+                        timeTaken += str(timeit.timeit(lambda: quicksorts.three_way_quicksort(testArr, reverse=True), number=1))
+                        del testArr
+                        print(f"3-way quick sort (random array, descending): {timeTaken}\n")
+                        testResults[THREE_WAY_QUICKSORT + TEST4] = timeTaken
+                    except (RecursionError):
+                        print(f"{F.LIGHTRED_EX}3-way quick sort (random array, descending): {timeTaken}Recursion error!")
+                        S_reset(nl=True)
+                        testResults[THREE_WAY_QUICKSORT + TEST4] = timeTaken + RECURSION_ERROR
+                    except (KeyboardInterrupt):
+                        print(f"{F.LIGHTRED_EX}Skipped 3-way quick sort...")
+                        S_reset(nl=True)
+                        testResults[THREE_WAY_QUICKSORT + TEST4] = SKIP
+                else:
+                    print(f"{F.LIGHTRED_EX}Skipped 3-way quick sort...")
                     S_reset(nl=True)
-                    testResults[THREE_WAY_QUICKSORT + TEST2] = timeTaken + RECURSION_ERROR
-
-                testArr = arrTwo.copy()
-                timeTaken = "\t\t\t\t\t"
-                try:
-                    timeTaken += str(timeit.timeit(lambda: quicksorts.three_way_quicksort(testArr), number=1))
-                    del testArr
-                    print(f"3-way quick sort (random array): {timeTaken}")
-                    testResults[THREE_WAY_QUICKSORT + TEST3] = timeTaken
-                except (RecursionError):
-                    print(f"{F.LIGHTRED_EX}3-way quick sort (random array): {timeTaken}Recursion error!")
-                    S_reset()
-                    testResults[THREE_WAY_QUICKSORT + TEST3] = timeTaken + RECURSION_ERROR
-
-                testArr = arrTwo.copy()
-                timeTaken = "\t\t\t\t"
-                try:
-                    timeTaken += str(timeit.timeit(lambda: quicksorts.three_way_quicksort(testArr, reverse=True), number=1))
-                    del testArr
-                    print(f"3-way quick sort (random array, descending): {timeTaken}\n")
-                    testResults[THREE_WAY_QUICKSORT + TEST4] = timeTaken
-                except (RecursionError):
-                    print(f"{F.LIGHTRED_EX}3-way quick sort (random array, descending): {timeTaken}Recursion error!")
-                    S_reset(nl=True)
-                    testResults[THREE_WAY_QUICKSORT + TEST4] = timeTaken + RECURSION_ERROR
 
                 # --------------------------------------------------------------------------------------------
 
