@@ -3,9 +3,7 @@ This Python script consists of a series of test cases for the various algorithms
 were implemented for this assignment. This program also compares various algorithms to each other
 to demonstrate how fast they are.
 """
-
 # import third party libraries
-from tkinter.filedialog import test
 from colorama import Fore as F, init as coloramaInit
 
 # import standard libraries
