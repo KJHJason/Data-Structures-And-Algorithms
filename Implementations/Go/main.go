@@ -38,9 +38,7 @@ func CallSortFunc(sortFunc func([]int, bool), baseArr []int, arr []int, reverse 
 	start := time.Now()
 	sortFunc(arr, reverse)
 	elapsed := time.Since(start)
-	fmt.Println(
-		fmt.Sprintf("%s: %v", name, elapsed),
-	)
+	fmt.Printf("%s: %v\n", name, elapsed)
 
 	// Reset the array
 	copy(arr, baseArr)
@@ -55,9 +53,7 @@ func CallNativeSort(baseArr []int, arr []int, reverse bool, name string) {
 		sort.Ints(arr)
 	}
 	elapsed := time.Since(start)
-	fmt.Println(
-		fmt.Sprintf("%s: %v", name, elapsed),
-	)
+	fmt.Printf("%s: %v\n", name, elapsed)
 
 	// Reset the array
 	copy(arr, baseArr)
@@ -76,9 +72,7 @@ func main() {
 		for i := 0; i < 10; i++ {
 			arrString += fmt.Sprintf("%d, ", array[i])
 		}
-		fmt.Println(
-			fmt.Sprintf("Unsorted array: [%s...]", arrString),
-		)
+		fmt.Printf("Unsorted array: [%s...]\n", arrString)
 	}
 	baseArray := make([]int, size) // copy of array
 	copy(baseArray, array)
