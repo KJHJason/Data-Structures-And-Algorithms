@@ -1,11 +1,15 @@
 package main
 
 import (
+	"os"
 	"fmt"
 	"time"
 	"sort"
 	"math/rand"
-	"dsa/algorithms"
+	"dsa/algorithms/sort"
+	"github.com/fatih/color"
+	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/jedib0t/go-pretty/v6/text"
 )
 
 // GetRandomArr returns an array of random integers
@@ -33,30 +37,61 @@ func GetNearlySortedArr(size int) []int {
 	return arr
 }
 
-// CallSortFunc calls the sorting function and prints the time taken
-func CallSortFunc(sortFunc func([]int, bool), baseArr []int, arr []int, reverse bool, name string) {
-	start := time.Now()
-	sortFunc(arr, reverse)
-	elapsed := time.Since(start)
-	fmt.Printf("%s: %v\n", name, elapsed)
+// Check if the array is sorted
+func CheckArrIsSorted(arr []int, name string, timeTaken time.Duration, t table.Writer) {
+	isSorted := true
+	result := "✓"
+	for i := 0; i < len(arr) - 1; i++ {
+		if (arr[i] > arr[i + 1]) {
+			isSorted = false
+			result = "✗"
+			break
+		}
+	}
 
-	// Reset the array
-	copy(arr, baseArr)
+	var tableRow []interface{} 
+	if (isSorted) {
+		// print the result with green color
+		tableRow = table.Row{
+			color.GreenString(name), 
+			color.GreenString(timeTaken.String()),
+			color.GreenString(result), 
+		}
+	} else {
+		// print the result with red color
+		tableRow = table.Row{
+			color.RedString(name), 
+			color.RedString(timeTaken.String()),
+			color.RedString(result), 
+		}
+	}
+	t.AppendRow(tableRow)
+}
+
+// CallSortFunc calls the sorting function and prints the time taken
+func CallSortFunc(sortFunc func([]int, bool), arr []int, reverse bool, name string, t table.Writer) {
+	arrCopy := make([]int, len(arr))
+	copy(arrCopy, arr)
+
+	start := time.Now()
+	sortFunc(arrCopy, reverse)
+	elapsed := time.Since(start)
+	CheckArrIsSorted(arrCopy, name, elapsed, t)
 }
 
 // CallNativeSort calls Go's native sort function and prints the time taken
-func CallNativeSort(baseArr []int, arr []int, reverse bool, name string) {
+func CallNativeSort(arr []int, reverse bool, t table.Writer) {
+	arrCopy := make([]int, len(arr))
+	copy(arrCopy, arr)
+
 	start := time.Now()
 	if (reverse) {
-		sort.Sort(sort.Reverse(sort.IntSlice(arr)))
+		sort.Sort(sort.Reverse(sort.IntSlice(arrCopy)))
 	} else {
-		sort.Ints(arr)
+		sort.Ints(arrCopy)
 	}
 	elapsed := time.Since(start)
-	fmt.Printf("%s: %v\n", name, elapsed)
-
-	// Reset the array
-	copy(arr, baseArr)
+	CheckArrIsSorted(arrCopy, "Go's Native Sort (pdqs)", elapsed, t)
 }
 
 func main() {
@@ -74,12 +109,21 @@ func main() {
 		}
 		fmt.Printf("Unsorted array: [%s...]\n", arrString)
 	}
-	baseArray := make([]int, size) // copy of array
-	copy(baseArray, array)
+
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Algorithm", "Time Taken", "Sorted?"})
+	t.SetColumnConfigs([]table.ColumnConfig{
+		{Number: 1, Align: text.AlignLeft, AlignHeader: text.AlignCenter},
+		{Number: 2, Align: text.AlignCenter, AlignHeader: text.AlignCenter},
+		{Number: 3, Align: text.AlignCenter, AlignHeader: text.AlignCenter},
+	})
 
 	// Call the sorting functions and print the time taken
 	fmt.Println("\nSorting in ascending order...")
-	CallNativeSort(baseArray, array, false, "Go's native sort")
-	CallSortFunc(algorithms.BubbleSort, baseArray, array, false, "Bubble Sort")
-	CallSortFunc(algorithms.InsertionSort, baseArray, array, false, "Insertion Sort")
+	CallNativeSort(array, false, t)
+	CallSortFunc(sorting_algorithms.BubbleSort, array, false, "Bubble Sort", t)
+	CallSortFunc(sorting_algorithms.InsertionSort, array, false, "Insertion Sort", t)
+	CallSortFunc(sorting_algorithms.SelectionSort, array, false, "Selection Sort", t)
+	t.Render()
 }

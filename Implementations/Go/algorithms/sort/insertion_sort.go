@@ -1,4 +1,4 @@
-package algorithms
+package sorting_algorithms
 
 // Sorts an array of integers using the insertion sort algorithm
 //
